@@ -1,0 +1,63 @@
+# Netlify deployment configuration for Dapur Comel PWA
+
+[build]
+  publish = "dist"
+  command = "npm run build"
+
+[build.environment]
+  NODE_VERSION = "20"
+
+# ── SPA routing ──────────────────────────────────────────────────────────────
+[[redirects]]
+  from   = "/*"
+  to     = "/index.html"
+  status = 200
+
+# ── Cache headers ─────────────────────────────────────────────────────────────
+
+# Mascot WebP assets — long cache, immutable (content-hashed by Vite)
+[[headers]]
+  for = "/assets/images/mascot/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+    Vary          = "Accept"
+
+# All other Vite-built assets (content-hashed filenames)
+[[headers]]
+  for = "/assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+# Icons — short cache (can change without version bump)
+[[headers]]
+  for = "/icons/*"
+  [headers.values]
+    Cache-Control = "public, max-age=86400"
+
+# Service worker — must never be cached by browser
+[[headers]]
+  for = "/sw.js"
+  [headers.values]
+    Cache-Control         = "no-cache, no-store, must-revalidate"
+    Service-Worker-Allowed = "/"
+
+# Workbox SW
+[[headers]]
+  for = "/workbox-*.js"
+  [headers.values]
+    Cache-Control = "no-cache, no-store, must-revalidate"
+
+# index.html — no cache (always fetch latest)
+[[headers]]
+  for = "/"
+  [headers.values]
+    Cache-Control = "no-cache, no-store, must-revalidate"
+
+# Security headers on all responses
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Content-Type-Options = "nosniff"
+    X-Frame-Options        = "DENY"
+    Referrer-Policy        = "strict-origin-when-cross-origin"
+    Permissions-Policy     = "accelerometer=(), camera=(), microphone=(), payment=()"
