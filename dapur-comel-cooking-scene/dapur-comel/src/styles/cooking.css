@@ -1,0 +1,312 @@
+/*
+ * cooking.css — Mobile game visual system
+ *
+ * Kitchen palette, 3D buttons, spring variables,
+ * particle keyframes, and cooking transformation classes.
+ * Imported once in index.css.
+ */
+
+/* ── CSS custom properties ───────────────────────────────────────────────── */
+:root {
+  --spring:  cubic-bezier(0.34, 1.56, 0.64, 1);
+  --snap:    cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  --ease:    cubic-bezier(0.4, 0, 0.2, 1);
+
+  /* Kitchen palette */
+  --wood-light:  #D4956A;
+  --wood-dark:   #A0724A;
+  --wall-warm:   #FDF6E8;
+  --tile-line:   rgba(200,160,100,0.15);
+  --counter-top: #C8956C;
+
+  /* Game UI */
+  --card-bg:     rgba(255, 252, 245, 0.97);
+  --card-shadow: 0 4px 24px rgba(80,40,10,0.14), 0 1px 4px rgba(80,40,10,0.08);
+  --card-border: 1px solid rgba(255,220,160,0.4);
+}
+
+/* ── Kitchen counter background ─────────────────────────────────────────── */
+.kitchen-bg {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.kitchen-wall {
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 62%;
+  background: linear-gradient(180deg, #FDF6E8 0%, #F5E8CC 100%);
+}
+
+/* Subtle tile grid */
+.kitchen-wall::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(var(--tile-line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--tile-line) 1px, transparent 1px);
+  background-size: 48px 48px;
+  opacity: 0.6;
+}
+
+.kitchen-counter {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 42%;
+  background: linear-gradient(180deg, var(--wood-light) 0%, var(--wood-dark) 100%);
+  box-shadow: inset 0 6px 16px rgba(0,0,0,0.18);
+}
+
+/* Counter top edge highlight */
+.kitchen-counter::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 6px;
+  background: linear-gradient(180deg, rgba(255,220,160,0.6) 0%, transparent 100%);
+}
+
+/* ── Cooking target shapes ───────────────────────────────────────────────── */
+
+/* Bowl — elliptical, deep shadow */
+.cooking-bowl {
+  background: linear-gradient(160deg, #FFF8EC 0%, #F0D8A8 60%, #E0C090 100%);
+  border-radius: 50% 50% 48% 48% / 28% 28% 72% 72%;
+  box-shadow:
+    inset 0 10px 24px rgba(0,0,0,0.14),
+    inset 0 2px 4px rgba(255,255,255,0.6),
+    0 8px 32px rgba(80,40,10,0.20);
+  border: 2px solid rgba(200,150,80,0.3);
+}
+
+/* Frying pan — darker, metallic */
+.cooking-pan {
+  background: linear-gradient(160deg, #5A5A5A 0%, #3D3D3D 100%);
+  border-radius: 50% 50% 45% 45% / 25% 25% 75% 75%;
+  box-shadow:
+    inset 0 8px 20px rgba(0,0,0,0.35),
+    inset 0 2px 4px rgba(255,255,255,0.08),
+    0 8px 32px rgba(0,0,0,0.30);
+  border: 3px solid #4A4A4A;
+}
+
+/* Pizza base — round, doughy */
+.cooking-pizza-base {
+  background: radial-gradient(circle at 40% 35%, #FFE4A0 0%, #F0C060 55%, #D4A040 100%);
+  border-radius: 50%;
+  box-shadow:
+    inset 0 -8px 16px rgba(0,0,0,0.12),
+    inset 0 4px 8px rgba(255,255,255,0.4),
+    0 8px 32px rgba(80,40,10,0.22);
+  border: 3px solid rgba(200,140,40,0.4);
+}
+
+/* Cake plate */
+.cooking-cake-plate {
+  background: linear-gradient(160deg, #FFE8E8 0%, #FFD0D0 60%, #FFC0C0 100%);
+  border-radius: 50% 50% 45% 45% / 25% 25% 75% 75%;
+  box-shadow:
+    inset 0 8px 20px rgba(0,0,0,0.1),
+    0 8px 32px rgba(232,82,122,0.25);
+  border: 2px solid rgba(255,160,160,0.4);
+}
+
+/* Burger board */
+.cooking-board {
+  background: linear-gradient(160deg, #DEB887 0%, #C8965A 100%);
+  border-radius: 16px;
+  box-shadow:
+    inset 0 4px 12px rgba(0,0,0,0.12),
+    0 6px 24px rgba(80,40,10,0.20);
+  border: 2px solid rgba(180,120,60,0.3);
+}
+
+/* ── Floating prompt card ────────────────────────────────────────────────── */
+.game-prompt {
+  background: var(--card-bg);
+  border-radius: 20px;
+  padding: 12px 20px;
+  box-shadow: var(--card-shadow);
+  border: var(--card-border);
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Subtle top shimmer */
+.game-prompt::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, rgba(255,200,100,0.8), transparent);
+}
+
+/* ── 3D game button ──────────────────────────────────────────────────────── */
+.btn-game {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  font-family: 'Nunito', sans-serif;
+  font-weight: 900;
+  color: white;
+  cursor: pointer;
+  user-select: none;
+  touch-action: manipulation;
+  transition: transform 80ms ease, box-shadow 80ms ease;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.2);
+}
+
+.btn-game-primary {
+  background: linear-gradient(180deg, #FF9A5A 0%, #FF7030 100%);
+  box-shadow: 0 6px 0 #C04010, 0 8px 24px rgba(200,60,0,0.35);
+}
+.btn-game-primary:active {
+  transform: translateY(4px);
+  box-shadow: 0 2px 0 #C04010, 0 4px 12px rgba(200,60,0,0.25);
+}
+
+.btn-game-mint {
+  background: linear-gradient(180deg, #6ED4C6 0%, #44B0A2 100%);
+  box-shadow: 0 6px 0 #2A8878, 0 8px 24px rgba(40,140,130,0.3);
+}
+.btn-game-mint:active {
+  transform: translateY(4px);
+  box-shadow: 0 2px 0 #2A8878;
+}
+
+/* ── Cooking transformation keyframes ───────────────────────────────────── */
+
+/* Pan sizzle bubble */
+@keyframes sizzleBubble {
+  0%   { transform: translate(0, 0) scale(0.5); opacity: 0.8; }
+  60%  { opacity: 0.6; }
+  100% { transform: translate(var(--bx, 0px), -30px) scale(0.2); opacity: 0; }
+}
+
+/* Steam rise */
+@keyframes steamRise {
+  0%   { transform: translateY(0) scale(1) rotate(0deg); opacity: 0.7; }
+  50%  { transform: translateY(-24px) scale(1.2) rotate(8deg); opacity: 0.4; }
+  100% { transform: translateY(-50px) scale(1.5) rotate(-5deg); opacity: 0; }
+}
+
+/* Particle burst from center */
+@keyframes burst {
+  0%   { transform: translate(0,0) scale(1);          opacity: 1; }
+  100% { transform: translate(var(--tx),var(--ty)) scale(0.3); opacity: 0; }
+}
+
+/* Drip / pour stream */
+@keyframes streamFlow {
+  0%,100% { scaleX: 1; }
+  50%      { scaleX: 1.1; }
+}
+
+/* Layer drop-in with overshoot */
+@keyframes layerDrop {
+  0%   { transform: translateY(-50px) scaleX(1.15) scaleY(0.85); opacity: 0; }
+  60%  { transform: translateY(5px)   scaleX(0.97) scaleY(1.03); opacity: 1; }
+  80%  { transform: translateY(-2px)  scaleX(1.01) scaleY(0.99); }
+  100% { transform: translateY(0)     scaleX(1)    scaleY(1);    opacity: 1; }
+}
+
+/* Topping snap-in */
+@keyframes toppingSnap {
+  0%   { transform: scale(0) rotate(-15deg); opacity: 0; }
+  65%  { transform: scale(1.25) rotate(5deg); opacity: 1; }
+  100% { transform: scale(1) rotate(0deg);   opacity: 1; }
+}
+
+/* Crack split */
+@keyframes crackSplit {
+  0%   { transform: translateX(0) rotate(0deg); }
+  40%  { transform: translateX(-12px) rotate(-15deg); }
+  100% { transform: translateX(-30px) rotate(-35deg) translateY(20px); opacity: 0; }
+}
+@keyframes crackSplitR {
+  0%   { transform: translateX(0) rotate(0deg); }
+  40%  { transform: translateX(12px) rotate(15deg); }
+  100% { transform: translateX(30px) rotate(35deg) translateY(20px); opacity: 0; }
+}
+
+/* Yolk fall */
+@keyframes yolkFall {
+  0%   { transform: translateY(-20px) scale(0.5); opacity: 0; }
+  50%  { transform: translateY(0) scale(1.2); opacity: 1; }
+  75%  { transform: translateY(4px) scale(0.9); }
+  100% { transform: translateY(0) scale(1); opacity: 1; }
+}
+
+/* Browning — used for fry/bake progress */
+@keyframes brownPulse {
+  0%,100% { filter: brightness(1); }
+  50%      { filter: brightness(1.08); }
+}
+
+/* Dough expand squash */
+@keyframes doughExpand {
+  0%   { transform: scaleX(1) scaleY(1); }
+  30%  { transform: scaleX(1.12) scaleY(0.88); }
+  60%  { transform: scaleX(0.96) scaleY(1.04); }
+  100% { transform: scaleX(1) scaleY(1); }
+}
+
+/* Heart float */
+@keyframes heartFloat {
+  0%   { transform: translateY(0) scale(0.5); opacity: 0; }
+  25%  { opacity: 1; transform: translateY(-16px) scale(1.2); }
+  100% { transform: translateY(-80px) scale(0.8); opacity: 0; }
+}
+
+/* Flip tumble */
+@keyframes flipTumble {
+  0%   { transform: translateY(0) rotateX(0deg) scaleX(1) scaleY(1); }
+  30%  { transform: translateY(-70px) rotateX(180deg) scaleX(0.9) scaleY(1.1); }
+  70%  { transform: translateY(-30px) rotateX(330deg) scaleX(1.05) scaleY(0.95); }
+  100% { transform: translateY(0) rotateX(360deg) scaleX(1) scaleY(1); }
+}
+
+/* Screen flash on completion */
+@keyframes completionFlash {
+  0%   { opacity: 0; }
+  30%  { opacity: 0.35; }
+  100% { opacity: 0; }
+}
+
+/* Ambient float for background elements */
+@keyframes ambientFloat {
+  0%,100% { transform: translateY(0) rotate(0deg); opacity: var(--ao, 0.12); }
+  50%      { transform: translateY(-10px) rotate(4deg); opacity: calc(var(--ao, 0.12) * 1.4); }
+}
+
+/* Sauce spread — radial expand */
+@keyframes sauceSpread {
+  from { transform: scale(0.3); opacity: 0.8; }
+  to   { transform: scale(1);   opacity: 1; }
+}
+
+/* ── Ingredient visual cards ─────────────────────────────────────────────── */
+.ingredient-card {
+  background: var(--card-bg);
+  border-radius: 20px;
+  box-shadow: var(--card-shadow), 0 4px 0 rgba(0,0,0,0.08);
+  border: var(--card-border);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  cursor: pointer;
+  touch-action: manipulation;
+  user-select: none;
+  transition: transform 80ms ease;
+}
+.ingredient-card:active {
+  transform: scale(0.92) translateY(2px);
+}
