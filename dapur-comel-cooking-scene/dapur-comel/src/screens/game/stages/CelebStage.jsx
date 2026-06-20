@@ -13,6 +13,7 @@ import { useEffect, useState, useRef, useCallback } from 'react'
 import { StickerPopup }   from '../../../components/ui/StickerPopup.jsx'
 import { BigButton }      from '../../../components/ui/BigButton.jsx'
 import { Oyen }           from '../../../components/mascot/Oyen.jsx'
+import { GameSprite }     from '../../../components/ui/GameSprite.jsx'
 import { useVoiceContext, useGameContext, useProgressContext } from '../../../App.jsx'
 import { OYEN_EXPRESSION } from '../../../utils/constants.js'
 import confetti from 'canvas-confetti'
@@ -133,7 +134,7 @@ function LearnSummaryCard({ recipe }) {
           borderRadius:  16,
           padding:       '12px 8px',
         }}>
-          <div style={{ fontSize: '3rem', lineHeight: 1 }}>{learn.shape.emoji}</div>
+          <div style={{ lineHeight: 1 }}><GameSprite emoji={learn.shape.emoji} size={48} /></div>
           <p style={{ margin: 0, fontFamily: "'Nunito', sans-serif", fontSize: '0.7rem', fontWeight: 700, color: 'rgba(61,43,31,0.45)', textAlign: 'center' }}>Bentuk</p>
           <p style={{
             margin:     0,
@@ -295,7 +296,8 @@ export function CelebStage({ recipe, stageConfig, onComplete }) {
           color:      'rgba(61,43,31,0.6)',
           margin:     '4px 0 0',
         }}>
-          {recipe?.name ?? 'Makanan'} dah siap! {foodEmoji}
+          {recipe?.name ?? 'Makanan'} dah siap!{' '}
+          <GameSprite emoji={foodEmoji} size={24} style={{ verticalAlign: 'middle' }} />
         </p>
       </div>
 
@@ -313,7 +315,6 @@ export function CelebStage({ recipe, stageConfig, onComplete }) {
           <span
             key={i}
             style={{
-              fontSize:   '2.8rem',
               lineHeight:  1,
               opacity:    i < starsToShow ? 1 : 0.15,
               filter:     starsVisible[i] ? 'drop-shadow(0 0 12px rgba(255,215,0,0.9))' : 'none',
@@ -322,7 +323,9 @@ export function CelebStage({ recipe, stageConfig, onComplete }) {
               display:    'inline-block',
             }}
             aria-hidden="true"
-          >⭐</span>
+          >
+            <GameSprite name="star" size={44} />
+          </span>
         ))}
       </div>
 
@@ -362,9 +365,13 @@ export function CelebStage({ recipe, stageConfig, onComplete }) {
               color:        '#fff',
               cursor:       'pointer',
               touchAction:  'manipulation',
+              display:      'inline-flex',
+              alignItems:   'center',
+              justifyContent:'center',
+              gap:           8,
             }}
           >
-            🍳 Masak Lagi!
+            <GameSprite emoji="🍳" size={28} /> Masak Lagi!
           </button>
           <button
             type="button"

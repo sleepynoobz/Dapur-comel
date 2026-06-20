@@ -11,6 +11,7 @@
 
 import { useEffect, useRef, useCallback, useState, memo } from 'react'
 import { Oyen }       from '../components/mascot/Oyen.jsx'
+import { GameSprite } from '../components/ui/GameSprite.jsx'
 import { ParentGate } from '../components/gates/ParentGate.jsx'
 import {
   useVoiceContext, useGameContext, useProgressContext,
@@ -241,7 +242,7 @@ export function RecipeSelectScreen() {
                 boxShadow:    '0 4px 12px rgba(0,0,0,0.1)',
                 filter:       `drop-shadow(0 3px 8px ${card.color}55)`,
               }} aria-hidden="true">
-                <span style={{ fontSize: '3.2rem', lineHeight: 1 }}>{card.emoji}</span>
+                <GameSprite emoji={card.emoji} size={58} />
               </div>
 
               {/* Name + desc */}

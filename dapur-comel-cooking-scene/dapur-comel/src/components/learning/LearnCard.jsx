@@ -12,6 +12,7 @@
 
 import { useEffect, useState, useCallback } from 'react'
 import { hapticSuccess } from '../../utils/haptics.js'
+import { GameSprite } from '../ui/GameSprite.jsx'
 
 const DISPLAY_MS = 3000
 
@@ -88,9 +89,11 @@ export function LearnCard({ type = 'color', word, subtext, colorHex, emoji, onDi
           }} />
         )}
 
-        {/* Main emoji */}
+        {/* Main sprite */}
         {!colorHex && emoji && (
-          <div style={{ fontSize: '4rem', marginBottom: 8, lineHeight: 1 }}>{emoji}</div>
+          <div style={{ marginBottom: 8, lineHeight: 1 }}>
+            <GameSprite emoji={emoji} size={88} />
+          </div>
         )}
 
         {/* Prefix label */}

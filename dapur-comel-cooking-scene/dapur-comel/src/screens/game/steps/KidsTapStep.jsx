@@ -21,6 +21,7 @@ import { STEP } from '../../../utils/constants.js'
 import { LearnCard } from '../../../components/learning/LearnCard.jsx'
 import { ColorSpot } from '../../../components/learning/ColorSpot.jsx'
 import { ShapeTeach } from '../../../components/learning/ShapeTeach.jsx'
+import { GameSprite } from '../../../components/ui/GameSprite.jsx'
 
 const STEP_CONFIG = {
   [STEP.CRACK_EGG]:     { tapsNeeded: 2, mainEmoji: '🥚', successEmoji: '💛', bg: '#FFF9EC', borderColor: '#FFD700' },
@@ -93,14 +94,13 @@ function TapTarget({ emoji, progress, tapsNeeded, pulsing, onTap }) {
             display:        'flex',
             alignItems:     'center',
             justifyContent: 'center',
-            fontSize:       '5rem',
             lineHeight:      1,
             animation:      pulsing ? 'kidsPulse 1.5s ease-in-out infinite' : 'none',
             transition:     'box-shadow 0.2s ease',
           }}
-          aria-label={`Ketuk ${emoji}`}
+          aria-label="Ketuk"
         >
-          {emoji}
+          <GameSprite emoji={emoji} size={96} />
         </button>
       </div>
 
@@ -213,8 +213,13 @@ export function KidsTapStep({ recipe, step, onComplete }) {
           color:      '#3D2B1F',
           margin:      0,
           lineHeight:  1.2,
+          display:     'inline-flex',
+          alignItems:  'center',
+          justifyContent: 'center',
+          gap:          8,
         }}>
-          {step.label} {step.emoji}
+          <span>{step.label}</span>
+          <GameSprite emoji={step.emoji} size={32} />
         </p>
       </div>
 
@@ -258,8 +263,8 @@ export function KidsTapStep({ recipe, step, onComplete }) {
             gap:            16,
             animation:     'kidsBigPop 0.5s cubic-bezier(0.34,1.7,0.64,1)',
           }}>
-            <div style={{ fontSize: '6rem', filter: 'drop-shadow(0 8px 16px rgba(0,0,0,0.15))' }}>
-              {cfg.mainEmoji}
+            <div style={{ filter: 'drop-shadow(0 8px 16px rgba(0,0,0,0.15))', animation: 'foodPulse 1.6s ease-in-out infinite' }}>
+              <GameSprite emoji={cfg.mainEmoji} size={130} />
             </div>
             {step.encouragement && (
               <div style={{
@@ -283,7 +288,6 @@ export function KidsTapStep({ recipe, step, onComplete }) {
             aria-hidden="true"
             style={{
               position:   'absolute',
-              fontSize:   '1.8rem',
               top:        '50%',
               left:       '50%',
               transform:  `translate(-50%,-50%)`,
@@ -293,7 +297,7 @@ export function KidsTapStep({ recipe, step, onComplete }) {
               pointerEvents:'none',
             }}
           >
-            {p.emoji}
+            <GameSprite emoji={p.emoji} size={30} />
           </span>
         ))}
       </div>

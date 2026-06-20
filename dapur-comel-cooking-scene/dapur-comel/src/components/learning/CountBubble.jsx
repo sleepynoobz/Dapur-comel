@@ -9,6 +9,7 @@
 
 import { useState, useEffect } from 'react'
 import { hapticTap } from '../../utils/haptics.js'
+import { GameSprite } from '../ui/GameSprite.jsx'
 
 const MALAY_NUMBERS = ['', 'Satu', 'Dua', 'Tiga', 'Empat', 'Lima']
 const NUMBER_COLORS = ['', '#FF6B6B', '#FFD700', '#5EC4B6', '#E8527A', '#FF8C5A']
@@ -48,7 +49,6 @@ export function CountBubble({ count = 3, emoji = '⭐', onDone }) {
           <div
             key={i}
             style={{
-              fontSize:   '3.5rem',
               lineHeight:  1,
               transform:   i < clampedShowing ? 'scale(1)' : 'scale(0)',
               opacity:     i < clampedShowing ? 1 : 0,
@@ -58,7 +58,7 @@ export function CountBubble({ count = 3, emoji = '⭐', onDone }) {
             }}
             aria-hidden="true"
           >
-            {emoji}
+            <GameSprite emoji={emoji} size={56} />
           </div>
         ))}
       </div>

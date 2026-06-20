@@ -218,6 +218,29 @@ export function SettingsScreen() {
             )}
           </section>
 
+          <div className="h-px bg-gray-100" />
+
+          {/* Asset credits — required attribution for open source art */}
+          <section aria-label="Kredit aset">
+            <p className="text-[0.7rem] font-display font-900 text-ink-muted uppercase tracking-wider mb-3">
+              🎨 Kredit Aset
+            </p>
+            <div className="space-y-2 text-[0.68rem] font-body text-ink-muted leading-relaxed">
+              <p>
+                Ilustrasi makanan &amp; kucing daripada{' '}
+                <span className="font-700 text-ink-soft">OpenMoji</span> (CC BY-SA 4.0).
+              </p>
+              <p>
+                Ikon peralatan dapur daripada{' '}
+                <span className="font-700 text-ink-soft">game-icons.net</span> (CC BY 3.0).
+              </p>
+              <p>
+                Font <span className="font-700 text-ink-soft">Fredoka One</span> (SIL OFL),
+                confetti oleh <span className="font-700 text-ink-soft">canvas-confetti</span> (MIT).
+              </p>
+            </div>
+          </section>
+
           <p className="text-center text-[0.65rem] text-gray-300 font-body pb-2">
             Dapur Comel v{APP_VERSION} • Dibuat dengan ❤️
           </p>
