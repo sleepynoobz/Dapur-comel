@@ -1,0 +1,59 @@
+import { STEP } from '../../utils/constants.js'
+
+export const pizzaRecipe = {
+  id:         'pizza',
+  name:       'Pizza',
+  emoji:      '🍕',
+  color:      '#FF6B35',
+  accentColor:'#CC3A00',
+  bgGradient: 'linear-gradient(175deg, #FFF8F0, #FFE0C8)',
+
+  learn: {
+    color:      { name: 'Merah', hex: '#FF4500', emoji: '🔴' },
+    shape:      { name: 'Bulatan', emoji: '⭕' },
+    number:     3,
+    numberWord: 'Tiga',
+  },
+
+  steps: [
+    {
+      type:         STEP.FLATTEN_DOUGH,
+      label:        'Tepek Doh!',
+      emoji:        '🫓',
+      gesture:      'tap',
+      sfx:          'pop',
+      oyenReact:    'happy',
+      durationHint: 2500,
+      learn:        { word: 'Bulatan', shape: 'circle', emoji: '⭕', color: 'Kuning', colorHex: '#F5DEB3' },
+      encouragement:'Cantik! Doh jadi bulatan! ⭕',
+    },
+    {
+      type:         STEP.SPREAD_SAUCE,
+      label:        'Sapukan Sos Merah!',
+      emoji:        '🍅',
+      gesture:      'tap',
+      sfx:          'pour',
+      oyenReact:    'excited',
+      durationHint: 2500,
+      learn:        { word: 'Merah', color: 'Merah', colorHex: '#FF4500', emoji: '🔴' },
+      encouragement:'Sos merah dah siap! 🍅',
+    },
+    {
+      type:         STEP.ADD_TOPPINGS,
+      label:        'Letak Topping!',
+      emoji:        '🧀',
+      gesture:      'tap',
+      sfx:          'sparkle',
+      oyenReact:    'excited',
+      durationHint: 3000,
+      toppings: [
+        { id: 'cheese',   emoji: '🧀', label: 'Keju',     color: 'Kuning', colorHex: '#FFD700' },
+        { id: 'mushroom', emoji: '🍄', label: 'Cendawan', color: 'Perang', colorHex: '#8B4513' },
+        { id: 'olive',    emoji: '🫒', label: 'Zaitun',   color: 'Hijau',  colorHex: '#556B2F' },
+      ],
+      requiredCount: 3,
+      learn:        { word: 'Tiga', number: 3, emoji: '3️⃣' },
+      encouragement:'Tiga topping! Satu, dua, tiga! 🎉',
+    },
+  ],
+}
