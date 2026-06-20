@@ -10,9 +10,10 @@
  */
 
 import { useEffect, useRef, useState, useCallback, memo } from 'react'
-import { Oyen }       from '../components/mascot/Oyen.jsx'
-import { GameSprite } from '../components/ui/GameSprite.jsx'
-import { ParentGate } from '../components/gates/ParentGate.jsx'
+import { Oyen }         from '../components/mascot/Oyen.jsx'
+import { GameSprite }   from '../components/ui/GameSprite.jsx'
+import { KitchenScene } from '../components/ui/KitchenScene.jsx'
+import { ParentGate }   from '../components/gates/ParentGate.jsx'
 import { useVoiceContext, useGameContext, useProgressContext } from '../App.jsx'
 import { OYEN_EXPRESSION } from '../utils/constants.js'
 import { sfx } from '../utils/audio.js'
@@ -257,19 +258,8 @@ export function HomeScreen() {
   return (
     <div className="relative w-full h-full flex flex-col overflow-hidden select-none">
 
-      {/* Kitchen background */}
-      <div className="absolute inset-0" aria-hidden="true">
-        <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '58%',
-                      background: 'linear-gradient(180deg, #FDF6E8, #F5E8CC)' }} />
-        <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '58%',
-                      backgroundImage: 'linear-gradient(rgba(200,160,100,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(200,160,100,0.1) 1px, transparent 1px)',
-                      backgroundSize: '48px 48px' }} />
-        <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, height: '45%',
-                      background: 'linear-gradient(180deg, #D4956A, #A0724A)',
-                      boxShadow: 'inset 0 6px 16px rgba(0,0,0,0.18)' }} />
-        <div style={{ position: 'absolute', bottom: '45%', left: 0, right: 0, height: 10,
-                      background: 'linear-gradient(180deg, rgba(0,0,0,0.2), transparent)' }} />
-      </div>
+      {/* Illustrated kitchen background */}
+      <KitchenScene className="absolute inset-0" />
 
       <Floaties />
 
@@ -280,47 +270,35 @@ export function HomeScreen() {
 
       <div className="relative z-10 flex flex-col items-center justify-between w-full flex-1 px-5 pt-5 pb-5">
 
-        {/* Title — Fredoka One font, bigger and rounder */}
+        {/* Title banner */}
         <div className="text-center" style={fadeUp(0)}>
           <div style={{
-            background:   'rgba(255,252,240,0.96)',
-            borderRadius:  22,
-            padding:      '10px 28px 14px',
-            boxShadow:    '0 6px 0 rgba(200,140,60,0.35), 0 8px 24px rgba(0,0,0,0.12)',
-            border:       '2px solid rgba(255,200,100,0.4)',
+            background:         'rgba(255,252,240,0.92)',
+            borderRadius:        24,
+            padding:            '10px 32px 16px',
+            boxShadow:          '0 6px 0 rgba(180,120,50,0.35), 0 10px 28px rgba(0,0,0,0.16)',
+            border:             '2px solid rgba(255,210,120,0.5)',
+            backdropFilter:     'blur(8px)',
+            WebkitBackdropFilter:'blur(8px)',
           }}>
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8, marginBottom: 4 }}>
-              <GameSprite emoji="🍳" size={24} />
-              <p style={{ fontFamily: "'Nunito', sans-serif", fontWeight: 800, fontSize: '0.72rem',
-                           color: 'rgba(61,43,31,0.5)', letterSpacing: '0.12em',
-                           textTransform: 'uppercase', margin: 0 }}>
-                Selamat Datang ke
-              </p>
-              <GameSprite emoji="🍳" size={24} />
-            </div>
-            <h1 style={{
-              fontFamily: "'Fredoka One', 'Nunito', sans-serif",
-              fontSize:   '3.2rem',
-              fontWeight:  900,
-              lineHeight:  1,
-              color:      '#3D2B1F',
-              margin:      0,
+            <p style={{
+              fontFamily:    "'Nunito', sans-serif", fontWeight: 800, fontSize: '0.7rem',
+              color:         'rgba(61,43,31,0.45)', letterSpacing: '0.14em',
+              textTransform: 'uppercase', margin: '0 0 4px',
+              display:       'flex', alignItems: 'center', justifyContent: 'center', gap: 6,
             }}>
-              Dapur
-            </h1>
+              <GameSprite emoji="🍳" size={18} /> Selamat Datang ke <GameSprite emoji="🍳" size={18} />
+            </p>
             <h1 style={{
               fontFamily: "'Fredoka One', 'Nunito', sans-serif",
-              fontSize:   '3.6rem',
-              fontWeight:  900,
-              lineHeight:  1,
-              margin:      0,
+              fontSize:   '3.4rem', fontWeight: 900, lineHeight: 1, color: '#3D2B1F', margin: 0,
+            }}>Dapur</h1>
+            <h1 style={{
+              fontFamily: "'Fredoka One', 'Nunito', sans-serif",
+              fontSize:   '3.8rem', fontWeight: 900, lineHeight: 1, margin: 0,
               background: 'linear-gradient(135deg, #FF8C5A 0%, #E8527A 45%, #FFD700 100%)',
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
-              backgroundClip: 'text',
-            }}>
-              Comel!
-            </h1>
+              WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text',
+            }}>Comel!</h1>
           </div>
         </div>
 

@@ -1,25 +1,23 @@
 /**
  * Oyen.jsx — the cat chef mascot.
  *
- * Now drawn with open source illustrated cat faces (OpenMoji, CC-BY-SA 4.0)
- * instead of system emoji / missing webp art, plus a chef's toque from
- * game-icons.net (CC-BY 3.0) so Oyen clearly reads as a cooking character.
- *
- * Keeps the expression → animation / glow / overlay system and the random
- * idle micro-behaviours.
+ * Now uses OyenCharacter, a fully illustrated inline-SVG cat with body, chef
+ * outfit, paws, tail, and 8 facial expressions — no external asset needed.
+ * Keeps the expression → animation / glow / overlay system and random idle
+ * micro-behaviours from before.
  */
 
 import { memo, useEffect, useRef, useState } from 'react'
 import { OYEN_EXPRESSION } from '../../utils/constants.js'
-import { catSrc, toolSrc, OYEN_FACE } from '../../data/assets.js'
+import { OyenCharacter } from './OyenCharacter.jsx'
 
-// ── Size map ──────────────────────────────────────────────────────────────────
+// ── Size map — width only; OyenCharacter maintains its own aspect ratio ──────
 const SIZE_DIM = {
-  xs: 56,
-  sm: 88,
-  md: 132,
-  lg: 180,
-  xl: 240,
+  xs: 60,
+  sm: 96,
+  md: 140,
+  lg: 188,
+  xl: 248,
 }
 
 // ── Expression definitions ────────────────────────────────────────────────────
@@ -228,77 +226,50 @@ export const Oyen = memo(function Oyen({
 
   const expr = EXPRESSIONS[activeExpression] ?? EXPRESSIONS[OYEN_EXPRESSION.IDLE]
   const dim  = SIZE_DIM[size] ?? SIZE_DIM.md
-  const face = catSrc(OYEN_FACE[activeExpression] ?? 'idle')
 
-  const idleAnim    = useOyenIdle(activeExpression, isSpeaking)
-  const OverlayComp  = expr.overlay ? OVERLAY_MAP[expr.overlay] : null
+  const idleAnim   = useOyenIdle(activeExpression, isSpeaking)
+  const OverlayComp = expr.overlay ? OVERLAY_MAP[expr.overlay] : null
 
   const animStr = idleAnim
     ? `${idleAnim} 0.7s ease-in-out 1`
     : `${expr.anim} ${getAnimDuration(expr.anim)} ease-in-out infinite`
 
+  // OyenCharacter maintains ~1.38 aspect ratio; container must match
+  const charHeight = Math.round(dim * 1.38)
+
   return (
     <div
       className={`relative inline-block select-none ${className}`}
-      style={{ width: dim, height: dim, cursor: onClick ? 'pointer' : 'default' }}
+      style={{ width: dim, height: charHeight, cursor: onClick ? 'pointer' : 'default' }}
       onClick={onClick}
       role={onClick ? 'button' : 'img'}
       aria-label={expr.label}
     >
-      {/* Ambient glow */}
-      <div className="absolute inset-0 rounded-full pointer-events-none"
-           style={{ background: `radial-gradient(ellipse at center, ${expr.glow} 0%, transparent 70%)`,
-                    transform: 'scale(1.4)', zIndex: 0, transition: 'background 0.4s ease' }}
-           aria-hidden="true" />
+      {/* Ambient glow behind character */}
+      <div
+        className="absolute pointer-events-none"
+        style={{
+          inset: '-20%',
+          background: `radial-gradient(ellipse at 50% 40%, ${expr.glow} 0%, transparent 65%)`,
+          transition: 'background 0.4s ease',
+          zIndex: 0,
+        }}
+        aria-hidden="true"
+      />
 
-      {/* Animated cat + hat group */}
+      {/* Animated character group */}
       <div
         style={{
-          position: 'relative', zIndex: 1, width: '100%', height: '100%',
+          position: 'relative', zIndex: 1,
+          width: dim, height: charHeight,
           animation: animStr, transformOrigin: 'center bottom',
           willChange: 'transform',
         }}
       >
-        {/* Chef toque */}
-        {showHat && (
-          <span
-            aria-hidden="true"
-            style={{
-              position:           'absolute',
-              top:                -dim * 0.30,
-              left:                '50%',
-              width:               dim * 0.62,
-              height:              dim * 0.62,
-              transform:          'translateX(-48%) rotate(-8deg)',
-              backgroundColor:    '#FFFDF7',
-              WebkitMaskImage:   `url(${toolSrc('chef-toque')})`,
-              maskImage:         `url(${toolSrc('chef-toque')})`,
-              WebkitMaskRepeat:  'no-repeat',
-              maskRepeat:        'no-repeat',
-              WebkitMaskPosition:'center',
-              maskPosition:      'center',
-              WebkitMaskSize:    'contain',
-              maskSize:          'contain',
-              filter:            'drop-shadow(0 2px 3px rgba(80,40,10,0.25))',
-              zIndex:             2,
-            }}
-          />
-        )}
-
-        {/* Cat face */}
-        <img
-          src={face}
-          alt={expr.label}
-          width={dim} height={dim}
-          draggable={false}
-          loading="eager"
-          decoding="async"
-          style={{
-            position: 'relative', zIndex: 1,
-            width: '100%', height: '100%', objectFit: 'contain',
-            transition: 'filter 0.3s ease',
-            filter: 'drop-shadow(0 4px 10px rgba(80,40,10,0.18))',
-          }}
+        <OyenCharacter
+          expression={activeExpression}
+          width={dim}
+          isSpeaking={isSpeaking}
         />
       </div>
 
