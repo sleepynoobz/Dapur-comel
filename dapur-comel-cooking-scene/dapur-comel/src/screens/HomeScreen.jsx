@@ -11,6 +11,7 @@
 
 import { useEffect, useRef, useState, useCallback, memo } from 'react'
 import { Oyen }       from '../components/mascot/Oyen.jsx'
+import { GameSprite } from '../components/ui/GameSprite.jsx'
 import { ParentGate } from '../components/gates/ParentGate.jsx'
 import { useVoiceContext, useGameContext, useProgressContext } from '../App.jsx'
 import { OYEN_EXPRESSION } from '../utils/constants.js'
@@ -35,12 +36,12 @@ function getDailyLesson() {
 }
 
 const FLOATIES = [
-  { e: '🍰', style: { top: '7%',  left: '5%'  }, delay: 0,   dur: 4.0, size: '2.2rem' },
-  { e: '⭐',  style: { top: '10%', right: '6%' }, delay: 0.6, dur: 3.3, size: '1.8rem' },
-  { e: '🍓', style: { top: '72%', left: '4%'  }, delay: 1.1, dur: 4.1, size: '2rem' },
-  { e: '🧁', style: { top: '68%', right: '5%' }, delay: 0.4, dur: 3.7, size: '2.1rem' },
-  { e: '✨', style: { top: '44%', left: '3%'  }, delay: 1.0, dur: 2.9, size: '1.6rem' },
-  { e: '🥚', style: { top: '38%', right: '4%' }, delay: 1.5, dur: 3.8, size: '1.9rem' },
+  { e: '🍰', style: { top: '7%',  left: '5%'  }, delay: 0,   dur: 4.0, size: 38 },
+  { e: '⭐',  style: { top: '10%', right: '6%' }, delay: 0.6, dur: 3.3, size: 30 },
+  { e: '🍓', style: { top: '72%', left: '4%'  }, delay: 1.1, dur: 4.1, size: 34 },
+  { e: '🍪', style: { top: '68%', right: '5%' }, delay: 0.4, dur: 3.7, size: 36 },
+  { e: '✨', style: { top: '44%', left: '3%'  }, delay: 1.0, dur: 2.9, size: 28 },
+  { e: '🥚', style: { top: '38%', right: '4%' }, delay: 1.5, dur: 3.8, size: 32 },
 ]
 
 const Floaties = memo(function Floaties() {
@@ -51,13 +52,12 @@ const Floaties = memo(function Floaties() {
       aria-hidden="true"
       style={{
         ...f.style,
-        fontSize:  f.size,
-        opacity:   0.6,
+        opacity:   0.85,
         animation: `ambientFloat ${f.dur}s ${f.delay}s ease-in-out infinite`,
-        filter:    'drop-shadow(0 2px 6px rgba(0,0,0,0.1))',
+        filter:    'drop-shadow(0 2px 6px rgba(0,0,0,0.12))',
       }}
     >
-      {f.e}
+      <GameSprite emoji={f.e} size={f.size} />
     </div>
   ))
 })
@@ -289,14 +289,14 @@ export function HomeScreen() {
             boxShadow:    '0 6px 0 rgba(200,140,60,0.35), 0 8px 24px rgba(0,0,0,0.12)',
             border:       '2px solid rgba(255,200,100,0.4)',
           }}>
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6, marginBottom: 2 }}>
-              <span style={{ fontSize: '1.4rem' }} aria-hidden="true">🍳</span>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8, marginBottom: 4 }}>
+              <GameSprite emoji="🍳" size={24} />
               <p style={{ fontFamily: "'Nunito', sans-serif", fontWeight: 800, fontSize: '0.72rem',
                            color: 'rgba(61,43,31,0.5)', letterSpacing: '0.12em',
                            textTransform: 'uppercase', margin: 0 }}>
                 Selamat Datang ke
               </p>
-              <span style={{ fontSize: '1.4rem' }} aria-hidden="true">🍳</span>
+              <GameSprite emoji="🍳" size={24} />
             </div>
             <h1 style={{
               fontFamily: "'Fredoka One', 'Nunito', sans-serif",
@@ -387,7 +387,7 @@ export function HomeScreen() {
               e.currentTarget.style.boxShadow = ''
             }}
           >
-            🍳 Jom Masak!
+            <GameSprite emoji="🍳" size={30} /> Jom Masak!
           </button>
 
           <p style={{

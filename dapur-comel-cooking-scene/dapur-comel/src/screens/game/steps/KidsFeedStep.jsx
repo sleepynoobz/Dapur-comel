@@ -10,12 +10,23 @@ import { useState, useCallback, useRef } from 'react'
 import { hapticTap, hapticSuccess } from '../../../utils/haptics.js'
 import { sfx } from '../../../utils/audio.js'
 import confetti from 'canvas-confetti'
+import { Oyen } from '../../../components/mascot/Oyen.jsx'
+import { GameSprite } from '../../../components/ui/GameSprite.jsx'
+import { OYEN_EXPRESSION } from '../../../utils/constants.js'
 
 const FOOD_EMOJI = {
-  pancake: '🥞',
-  cake:    '🎂',
-  pizza:   '🍕',
-  burger:  '🍔',
+  pancake:        '🥞',
+  cake:           '🎂',
+  'kek-strawberi':'🍰',
+  pizza:          '🍕',
+  burger:         '🍔',
+  biskut:         '🍪',
+}
+
+const PHASE_EXPRESSION = {
+  idle:   OYEN_EXPRESSION.HAPPY,
+  eating: OYEN_EXPRESSION.EXCITED,
+  happy:  OYEN_EXPRESSION.PROUD,
 }
 
 export function KidsFeedStep({ recipe, step, onComplete }) {
@@ -88,15 +99,13 @@ export function KidsFeedStep({ recipe, step, onComplete }) {
         justifyContent: 'center',
         gap:             24,
       }}>
-        {/* Oyen face — gets bigger when eating */}
+        {/* Oyen — grows when fed */}
         <div style={{
-          fontSize:   phase === 'happy' ? '8rem' : '5rem',
-          lineHeight:  1,
-          transition: 'font-size 0.4s cubic-bezier(0.34,1.7,0.64,1)',
-          filter:     'drop-shadow(0 8px 20px rgba(0,0,0,0.12))',
+          transition: 'transform 0.4s cubic-bezier(0.34,1.7,0.64,1)',
+          transform:   phase === 'happy' ? 'scale(1.25)' : 'scale(1)',
           animation:  phase === 'eating' ? 'oyenEat 0.4s ease-in-out' : undefined,
         }}>
-          {phase === 'happy' ? '😻' : phase === 'eating' ? '😺' : '😸'}
+          <Oyen expression={PHASE_EXPRESSION[phase] ?? OYEN_EXPRESSION.HAPPY} size="lg" />
         </div>
 
         {/* Arrow pointing down */}
@@ -129,7 +138,6 @@ export function KidsFeedStep({ recipe, step, onComplete }) {
               display:       'flex',
               alignItems:    'center',
               justifyContent:'center',
-              fontSize:      '4.5rem',
               lineHeight:     1,
               animation:     phase === 'idle' ? 'foodPulse 1.5s ease-in-out infinite' : 'none',
               transition:    'transform 0.1s ease',
@@ -137,7 +145,7 @@ export function KidsFeedStep({ recipe, step, onComplete }) {
             onPointerDown={e => { e.currentTarget.style.transform = 'scale(0.9)' }}
             aria-label="Bagi makan Oyen"
           >
-            {foodEmoji}
+            <GameSprite emoji={foodEmoji} size={84} />
           </button>
         ) : (
           /* Happy result */
