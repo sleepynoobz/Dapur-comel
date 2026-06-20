@@ -113,28 +113,37 @@ export function RecipeSelectScreen() {
     <div className="relative w-full h-full flex flex-col overflow-hidden select-none">
 
       <KitchenScene className="absolute inset-0" />
+      <div className="absolute inset-0" style={{ background: 'rgba(0,0,0,0.14)' }} />
 
       {/* Parent gate */}
       <div className="absolute top-0 right-0 z-50">
         <ParentGate onUnlock={openSettings}><div className="w-12 h-12" /></ParentGate>
       </div>
 
-      {/* Oyen header */}
+      {/* Header bar */}
       <div
-        className="relative z-10 flex items-center gap-3 px-4 pt-4 pb-2"
+        className="relative z-10 flex items-center gap-3 px-4 pt-3 pb-1"
         style={{ opacity: mounted ? 1 : 0, transition: 'opacity 0.2s ease' }}
       >
         <Oyen expression={expression} size="sm" isSpeaking={isSpeaking}
               onClick={() => setExpression(OYEN_EXPRESSION.CHEEKY)} />
-        <div className="game-prompt flex-1">
-          <span style={{
-            fontFamily: "'Nunito', sans-serif",
-            fontSize:   '1.1rem',
-            fontWeight:  900,
-            color:      'rgba(61,43,31,0.85)',
+        <div style={{ flex: 1 }}>
+          <div style={{
+            background:  'rgba(255,252,240,0.94)',
+            borderRadius: 16,
+            padding:     '7px 16px',
+            boxShadow:   '0 4px 0 rgba(160,90,20,0.3), 0 6px 18px rgba(0,0,0,0.18)',
+            border:      '2px solid rgba(255,210,100,0.5)',
           }}>
-            Nak masak apa? 🤔
-          </span>
+            <span style={{
+              fontFamily: "'Fredoka One', 'Nunito', sans-serif",
+              fontSize:   '1.25rem',
+              fontWeight:  900,
+              color:      '#3D2B1F',
+            }}>
+              Pilih Resepi! 🍳
+            </span>
+          </div>
         </div>
       </div>
 

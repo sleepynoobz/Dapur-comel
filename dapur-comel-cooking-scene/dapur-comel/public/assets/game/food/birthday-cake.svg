@@ -1,22 +1,79 @@
-<svg id="emoji" viewBox="0 0 72 72" xmlns="http://www.w3.org/2000/svg">
-  <g id="color">
-    <path fill="#fcea2b" stroke="none" d="M11,37c0,1.1045,50,2.1045,50,1v-7h-1V20c0-2.7612-2.2393-5-5-5H17c-2.7607,0-5,2.2388-5,5v11h-1V37z"/>
-    <path fill="#FFFFFF" stroke="none" d="M12,21.9238c1.9443-1.3081,4.6025-1.1064,6.3213,0.6123c1.9531,1.9522,5.1191,1.9522,7.0723,0 c1.9521-1.9521,5.1181-1.9521,7.0703,0c1.9531,1.9522,5.1191,1.9522,7.0722,0c1.9522-1.9521,5.1182-1.9521,7.0703,0 c1.9532,1.9522,5.1192,1.9522,7.0723,0c1.7188-1.7187,4.377-1.9204,6.3213-0.6123V20c0-2.7612-2.2393-5-5-5H17 c-2.7607,0-5,2.2388-5,5V21.9238z"/>
-    <path fill="#fcea2b" stroke="none" d="M5,60c0,1.1045,0.8955,2,2,2h58c1.1045,0,2-0.8955,2-2V41c0-2.7617-2.2393-5-5-5H10 c-2.7607,0-5,2.2383-5,5V60z"/>
-    <circle cx="36" cy="12" r="3" fill="#ea5a47" stroke="none"/>
-    <path fill="#FFFFFF" stroke="none" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="2" d="M11.251,45.5361c1.9521,1.9522,5.1181,1.9522,7.0703,0c1.9531-1.9521,5.1191-1.9521,7.0723,0 c1.9521,1.9522,5.1181,1.9522,7.0703,0c1.9531-1.9521,5.1191-1.9521,7.0722,0c1.9522,1.9522,5.1182,1.9522,7.0703,0 c1.9532-1.9521,5.1192-1.9521,7.0723,0c1.9522,1.9522,5.1182,1.9522,7.0703,0c1.6992-1.6982,4.3135-1.915,6.251-0.6591V41 c0-2.7617-2.2393-5-5-5H10c-2.7607,0-5,2.2383-5,5v3.877C6.9375,43.6211,9.5518,43.8379,11.251,45.5361z"/>
-  </g>
-  <g id="hair"/>
-  <g id="skin"/>
-  <g id="skin-shadow"/>
-  <g id="line">
-    <circle cx="36" cy="12" r="3" fill="none" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="2"/>
-    <path fill="none" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="2" d="M36,10.75c0-2.7617,2.2383-5,5-5"/>
-    <path fill="none" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="2" d="M11.251,45.5361c1.9521,1.9522,5.1181,1.9522,7.0703,0c1.9531-1.9521,5.1191-1.9521,7.0723,0 c1.9521,1.9522,5.1181,1.9522,7.0703,0c1.9531-1.9521,5.1191-1.9521,7.0722,0c1.9522,1.9522,5.1182,1.9522,7.0703,0 c1.9532-1.9521,5.1192-1.9521,7.0723,0c1.9522,1.9522,5.1182,1.9522,7.0703,0c1.6992-1.6982,4.3135-1.915,6.251-0.6591V41 c0-2.7617-2.2393-5-5-5H10c-2.7607,0-5,2.2383-5,5v3.877C6.9375,43.6211,9.5518,43.8379,11.251,45.5361z"/>
-    <path fill="none" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="2" d="M5,44.877V60c0,1.1045,0.8955,2,2,2h58c1.1045,0,2-0.8955,2-2V44.877"/>
-    <path fill="none" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="2" d="M11.251,45.5361c1.9521,1.9522,5.1181,1.9522,7.0703,0c1.9531-1.9521,5.1191-1.9521,7.0723,0 c1.9521,1.9522,5.1181,1.9522,7.0703,0c1.9531-1.9521,5.1191-1.9521,7.0722,0c1.9522,1.9522,5.1182,1.9522,7.0703,0 c1.9532-1.9521,5.1192-1.9521,7.0723,0c1.9522,1.9522,5.1182,1.9522,7.0703,0c1.6992-1.6982,4.3135-1.915,6.251-0.6591V41 c0-2.7617-2.2393-5-5-5H10c-2.7607,0-5,2.2383-5,5v3.877C6.9375,43.6211,9.5518,43.8379,11.251,45.5361z"/>
-    <line x1="60" x2="60" y1="21.9238" y2="32" fill="none" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="2"/>
-    <line x1="12" x2="12" y1="21.9238" y2="32" fill="none" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="2"/>
-    <path fill="none" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="2" d="M12,21.9238c1.9443-1.3081,4.6025-1.1064,6.3213,0.6123c1.9531,1.9522,5.1191,1.9522,7.0723,0 c1.9521-1.9521,5.1181-1.9521,7.0703,0c1.9531,1.9522,5.1191,1.9522,7.0722,0c1.9522-1.9521,5.1182-1.9521,7.0703,0 c1.9532,1.9522,5.1192,1.9522,7.0723,0c1.7188-1.7187,4.377-1.9204,6.3213-0.6123V20c0-2.7612-2.2393-5-5-5H17 c-2.7607,0-5,2.2388-5,5V21.9238z"/>
-  </g>
+<svg viewBox="0 0 200 190" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <radialGradient id="ck-body" cx="40%" cy="35%" r="65%">
+      <stop offset="0%" stop-color="#FFB5D0"/>
+      <stop offset="100%" stop-color="#E8527A"/>
+    </radialGradient>
+    <radialGradient id="ck-top" cx="40%" cy="30%" r="65%">
+      <stop offset="0%" stop-color="#FFF0F5"/>
+      <stop offset="100%" stop-color="#FFD8E8"/>
+    </radialGradient>
+    <radialGradient id="ck-butter" cx="35%" cy="30%" r="65%">
+      <stop offset="0%" stop-color="#FFF3A0"/>
+      <stop offset="100%" stop-color="#F5C842"/>
+    </radialGradient>
+  </defs>
+
+  <!-- Drop shadow -->
+  <ellipse cx="100" cy="182" rx="68" ry="8" fill="rgba(0,0,0,0.13)"/>
+
+  <!-- Bottom cake tier body -->
+  <rect x="28" y="118" width="144" height="58" rx="10" fill="url(#ck-body)" stroke="#2A1A0E" stroke-width="3.5"/>
+  <!-- Bottom tier highlight -->
+  <rect x="36" y="122" width="130" height="12" rx="6" fill="rgba(255,255,255,0.3)"/>
+  <!-- Bottom tier dots row -->
+  <circle cx="48" cy="158" r="5" fill="#FF69B4" stroke="#C02858" stroke-width="1.5"/>
+  <circle cx="68" cy="158" r="5" fill="#FFD700" stroke="#C8900A" stroke-width="1.5"/>
+  <circle cx="88" cy="158" r="5" fill="#FF69B4" stroke="#C02858" stroke-width="1.5"/>
+  <circle cx="108" cy="158" r="5" fill="#FFD700" stroke="#C8900A" stroke-width="1.5"/>
+  <circle cx="128" cy="158" r="5" fill="#FF69B4" stroke="#C02858" stroke-width="1.5"/>
+  <circle cx="148" cy="158" r="5" fill="#FFD700" stroke="#C8900A" stroke-width="1.5"/>
+
+  <!-- Cream divider between tiers -->
+  <ellipse cx="100" cy="118" rx="72" ry="10" fill="white" stroke="#2A1A0E" stroke-width="3"/>
+  <!-- Cream drips -->
+  <path d="M55,118 Q60,132 58,128 Q56,124 55,118Z" fill="white" stroke="#2A1A0E" stroke-width="1.5"/>
+  <path d="M80,118 Q86,136 83,130 Q80,124 80,118Z" fill="white" stroke="#2A1A0E" stroke-width="1.5"/>
+  <path d="M120,118 Q126,134 123,128 Q120,124 120,118Z" fill="white" stroke="#2A1A0E" stroke-width="1.5"/>
+  <path d="M145,118 Q150,130 148,126 Q146,122 145,118Z" fill="white" stroke="#2A1A0E" stroke-width="1.5"/>
+
+  <!-- Top cake tier body -->
+  <rect x="46" y="62" width="108" height="56" rx="10" fill="url(#ck-body)" stroke="#2A1A0E" stroke-width="3.5"/>
+  <!-- Top tier highlight -->
+  <rect x="54" y="66" width="96" height="12" rx="6" fill="rgba(255,255,255,0.3)"/>
+  <!-- Top tier heart decorations -->
+  <path d="M72,98 C72,94 76,90 80,94 C84,90 88,94 88,98 C88,104 80,110 80,110 C80,110 72,104 72,98Z" fill="#E8527A" stroke="#2A1A0E" stroke-width="1.5"/>
+  <path d="M112,98 C112,94 116,90 120,94 C124,90 128,94 128,98 C128,104 120,110 120,110 C120,110 112,104 112,98Z" fill="#E8527A" stroke="#2A1A0E" stroke-width="1.5"/>
+
+  <!-- Cream layer on top -->
+  <ellipse cx="100" cy="62" rx="54" ry="9" fill="url(#ck-top)" stroke="#2A1A0E" stroke-width="3"/>
+  <!-- Cream highlight -->
+  <ellipse cx="90" cy="60" rx="20" ry="4" fill="rgba(255,255,255,0.6)"/>
+  <!-- Cream drips from top tier -->
+  <path d="M64,62 Q68,74 66,70 Q64,66 64,62Z" fill="white" stroke="#2A1A0E" stroke-width="1.5"/>
+  <path d="M88,62 Q93,76 90,70 Q88,66 88,62Z" fill="white" stroke="#2A1A0E" stroke-width="1.5"/>
+  <path d="M120,62 Q125,74 122,70 Q120,66 120,62Z" fill="white" stroke="#2A1A0E" stroke-width="1.5"/>
+  <path d="M136,62 Q140,72 138,68 Q136,64 136,62Z" fill="white" stroke="#2A1A0E" stroke-width="1.5"/>
+
+  <!-- Pink candle -->
+  <rect x="76" y="34" width="10" height="26" rx="4" fill="#FF69B4" stroke="#2A1A0E" stroke-width="2"/>
+  <rect x="78" y="36" width="3" height="18" rx="1.5" fill="rgba(255,255,255,0.4)"/>
+  <path d="M81,34 C79,28 77,22 81,18 C85,22 83,28 81,34Z" fill="#FFD700" stroke="#FF8C00" stroke-width="1.5"/>
+  <path d="M81,32 C80,28 79,24 81,22 C83,24 82,28 81,32Z" fill="white" opacity="0.7"/>
+
+  <!-- Yellow candle -->
+  <rect x="96" y="30" width="10" height="30" rx="4" fill="#FFD700" stroke="#2A1A0E" stroke-width="2"/>
+  <rect x="98" y="32" width="3" height="22" rx="1.5" fill="rgba(255,255,255,0.4)"/>
+  <path d="M101,30 C99,24 97,17 101,13 C105,17 103,24 101,30Z" fill="#FF6B35" stroke="#CC3A00" stroke-width="1.5"/>
+  <path d="M101,28 C100,24 99,20 101,17 C103,20 102,24 101,28Z" fill="#FFD700" opacity="0.8"/>
+
+  <!-- Blue candle -->
+  <rect x="116" y="34" width="10" height="26" rx="4" fill="#4A90E2" stroke="#2A1A0E" stroke-width="2"/>
+  <rect x="118" y="36" width="3" height="18" rx="1.5" fill="rgba(255,255,255,0.4)"/>
+  <path d="M121,34 C119,28 117,22 121,18 C125,22 123,28 121,34Z" fill="#FFD700" stroke="#FF8C00" stroke-width="1.5"/>
+  <path d="M121,32 C120,28 119,24 121,22 C123,24 122,28 121,32Z" fill="white" opacity="0.7"/>
+
+  <!-- Sparkle stars -->
+  <path d="M68,22 L69.5,26 L73.5,27 L70.5,30 L71,34 L67.5,32 L64,34 L64.5,30 L61.5,27 L65.5,26Z" fill="#FFD700" stroke="#C8900A" stroke-width="1"/>
+  <path d="M132,24 L133,27 L136,28 L133.5,30.5 L134,33.5 L131.5,32 L129,33.5 L129.5,30.5 L127,28 L130,27Z" fill="#FF69B4" stroke="#C02858" stroke-width="1"/>
 </svg>
