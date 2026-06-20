@@ -1,23 +1,44 @@
-<svg id="emoji" viewBox="0 0 72 72" xmlns="http://www.w3.org/2000/svg">
-  <g id="color">
-    <path fill="#D0CFCE" stroke="#D0CFCE" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="2" d="M27.1244,42.9616v11.2545c0,0-0.1171,1.9012,2.5264,1.9012s11.7694,0,11.7694,0s2.2545,0.5562,2.2545-2.4086 c0-1.6448,0-6.6322,0-10.7472"/>
-    <path fill="#D0CFCE" stroke="none" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="2" d="M27.1244,46.7322v8.0389c0,0-0.1171,1.358,2.5264,1.358s11.7694,0,11.7694,0s2.2545,0.3973,2.2545-1.7204 c0-1.1748,0-4.7373,0-7.6766"/>
-    <path fill="#EA5A47" stroke="none" d="M60.996,33.9584c0,8.8366-11.1929,9-25,9s-25-0.1634-25-9s11.1929-23,25-23S60.996,25.1218,60.996,33.9584 z"/>
-    <path fill="none" stroke="#FFFFFF" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="2" d="M60.996,33.9584c0,8.8366-11.1929,9-25,9s-25-0.1634-25-9s11.1929-23,25-23S60.996,25.1218,60.996,33.9584z"/>
-    <path fill="#D22F27" stroke="none" d="M60.996,33.9591c0,8.8374-11.194,9.0023-25.0039,9.0023c33.1736-7.5962,0-32.0031,0-32.0031 C49.802,10.9583,60.996,25.1217,60.996,33.9591z"/>
-    <path fill="#FFFFFF" stroke="none" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="2" d="M22.7421,15.3869c0,0,4.6919,14.1211-10.9254,14.0122C11.8167,29.399,14.8217,20.3354,22.7421,15.3869z"/>
-    <ellipse cx="35.996" cy="30.1489" rx="8.0208" ry="6.1759" transform="matrix(0.9993 -0.0382 0.0382 0.9993 -1.1252 1.3968)" fill="#FFFFFF" stroke="none" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="2"/>
-    <path fill="#D0CFCE" stroke="none" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="2" d="M49.1551,15.3869c0,0-4.6919,14.1211,10.9254,14.0122C60.0804,29.399,57.0754,20.3354,49.1551,15.3869z"/>
-  </g>
-  <g id="hair"/>
-  <g id="skin"/>
-  <g id="skin-shadow"/>
-  <g id="line">
-    <path fill="none" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="2" d="M27.1244,46.7322v8.0389c0,0-0.1171,1.358,2.5264,1.358s11.7694,0,11.7694,0s2.2545,0.3973,2.2545-1.7204 c0-1.1748,0-4.7373,0-7.6766"/>
-    <path fill="none" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="2" d="M60.996,33.9584c0,8.8366-11.1929,9-25,9s-25-0.1634-25-9s11.1929-23,25-23S60.996,25.1218,60.996,33.9584z"/>
-    <path fill="none" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="2" d="M60.996,33.9584c0,8.8366-11.1929,9-25,9s-25-0.1634-25-9s11.1929-23,25-23S60.996,25.1218,60.996,33.9584z"/>
-    <path fill="none" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="2" d="M22.7421,15.3869c0,0,4.6919,14.1211-10.9254,14.0122C11.8167,29.399,14.8217,20.3354,22.7421,15.3869z"/>
-    <ellipse cx="35.996" cy="30.1489" rx="8.0208" ry="6.1759" transform="matrix(0.9993 -0.0382 0.0382 0.9993 -1.1252 1.3968)" fill="none" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="2"/>
-    <path fill="none" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="2" d="M49.1551,15.3869c0,0-4.6919,14.1211,10.9254,14.0122C60.0804,29.399,57.0754,20.3354,49.1551,15.3869z"/>
-  </g>
+<svg viewBox="0 0 140 160" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <radialGradient id="ms-cap" cx="38%" cy="28%" r="68%">
+      <stop offset="0%" stop-color="#E8735A"/>
+      <stop offset="100%" stop-color="#B03A20"/>
+    </radialGradient>
+    <radialGradient id="ms-gill" cx="40%" cy="30%" r="65%">
+      <stop offset="0%" stop-color="#FFF0EA"/>
+      <stop offset="100%" stop-color="#F0D5C8"/>
+    </radialGradient>
+  </defs>
+  <!-- Drop shadow -->
+  <ellipse cx="70" cy="152" rx="38" ry="7" fill="rgba(0,0,0,0.13)"/>
+
+  <!-- Stem -->
+  <path d="M50,108 Q48,140 55,148 Q70,155 85,148 Q92,140 90,108 Z" fill="#F5E8D8" stroke="#2A1A0E" stroke-width="3" stroke-linejoin="round"/>
+  <!-- Stem highlight -->
+  <path d="M56,112 Q56,140 60,148" stroke="rgba(255,255,255,0.5)" stroke-width="5" fill="none" stroke-linecap="round"/>
+  <!-- Stem shadow -->
+  <path d="M84,112 Q85,140 82,148" stroke="rgba(160,100,60,0.2)" stroke-width="5" fill="none" stroke-linecap="round"/>
+
+  <!-- Gills underside -->
+  <ellipse cx="70" cy="108" rx="42" ry="10" fill="url(#ms-gill)" stroke="#2A1A0E" stroke-width="2.5"/>
+  <!-- Gill lines -->
+  <line x1="40" y1="108" x2="46" y2="100" stroke="#D4B8A8" stroke-width="1.5"/>
+  <line x1="52" y1="111" x2="55" y2="100" stroke="#D4B8A8" stroke-width="1.5"/>
+  <line x1="64" y1="112" x2="65" y2="100" stroke="#D4B8A8" stroke-width="1.5"/>
+  <line x1="76" y1="112" x2="76" y2="100" stroke="#D4B8A8" stroke-width="1.5"/>
+  <line x1="88" y1="111" x2="86" y2="100" stroke="#D4B8A8" stroke-width="1.5"/>
+  <line x1="99" y1="108" x2="95" y2="100" stroke="#D4B8A8" stroke-width="1.5"/>
+
+  <!-- Cap -->
+  <path d="M10,95 Q10,50 70,28 Q130,50 130,95 Q120,110 70,112 Q20,110 10,95Z" fill="url(#ms-cap)" stroke="#2A1A0E" stroke-width="3.5" stroke-linejoin="round"/>
+  <!-- Cap highlight -->
+  <ellipse cx="48" cy="56" rx="22" ry="12" fill="rgba(255,200,180,0.4)" transform="rotate(-20 48 56)"/>
+  <!-- White spots -->
+  <circle cx="60" cy="55" r="9" fill="rgba(255,255,255,0.85)" stroke="#2A1A0E" stroke-width="2"/>
+  <circle cx="57" cy="52" rx="3" ry="2" fill="rgba(255,255,255,0.6)"/>
+  <circle cx="90" cy="65" r="7" fill="rgba(255,255,255,0.85)" stroke="#2A1A0E" stroke-width="2"/>
+  <circle cx="88" cy="62" rx="2.5" ry="1.5" fill="rgba(255,255,255,0.6)"/>
+  <circle cx="44" cy="78" r="5" fill="rgba(255,255,255,0.85)" stroke="#2A1A0E" stroke-width="2"/>
+  <circle cx="100" cy="85" r="4.5" fill="rgba(255,255,255,0.85)" stroke="#2A1A0E" stroke-width="2"/>
+  <circle cx="70" cy="46" r="5.5" fill="rgba(255,255,255,0.85)" stroke="#2A1A0E" stroke-width="2"/>
 </svg>

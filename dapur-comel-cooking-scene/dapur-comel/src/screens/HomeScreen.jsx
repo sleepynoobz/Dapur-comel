@@ -1,190 +1,82 @@
-/**
- * HomeScreen.jsx — Educational update for 2-3 year olds
- *
- * Changes:
- *   - Fredoka One display font for bigger, rounder title
- *   - "Belajar Hari Ini" section: color + number + shape of the day
- *   - Bigger play button (toddler-friendly 90px height)
- *   - Simpler mascot interaction
- *   - Daily lesson rotates based on day of year
- */
-
 import { useEffect, useRef, useState, useCallback, memo } from 'react'
-import { Oyen }       from '../components/mascot/Oyen.jsx'
-import { GameSprite } from '../components/ui/GameSprite.jsx'
-import { ParentGate } from '../components/gates/ParentGate.jsx'
+import { Oyen }         from '../components/mascot/Oyen.jsx'
+import { KitchenScene } from '../components/ui/KitchenScene.jsx'
+import { ParentGate }   from '../components/gates/ParentGate.jsx'
 import { useVoiceContext, useGameContext, useProgressContext } from '../App.jsx'
 import { OYEN_EXPRESSION } from '../utils/constants.js'
 import { sfx } from '../utils/audio.js'
 
-// Daily lesson rotation — one new lesson per day for variety
-const DAILY_LESSONS = [
-  { color: '#FF4500', colorName: 'Merah',        colorEmoji: '🔴', shape: '⭕', shapeName: 'Bulatan', number: 1, food: '🍅' },
-  { color: '#FFD700', colorName: 'Kuning',       colorEmoji: '🟡', shape: '🔶', shapeName: 'Berlian',  number: 2, food: '🌟' },
-  { color: '#4CAF50', colorName: 'Hijau',        colorEmoji: '🟢', shape: '🔺', shapeName: 'Segitiga', number: 3, food: '🥦' },
-  { color: '#2196F3', colorName: 'Biru',         colorEmoji: '🔵', shape: '🟦', shapeName: 'Segiempat', number: 4, food: '🫐' },
-  { color: '#E91E63', colorName: 'Merah Jambu',  colorEmoji: '🩷', shape: '⭕', shapeName: 'Bulatan',  number: 5, food: '🍓' },
-  { color: '#FF9800', colorName: 'Oren',         colorEmoji: '🟠', shape: '🔶', shapeName: 'Berlian',  number: 1, food: '🍊' },
-  { color: '#9C27B0', colorName: 'Ungu',         colorEmoji: '🟣', shape: '⭐', shapeName: 'Bintang',  number: 2, food: '🍇' },
-]
-
-const MALAY_NUMBERS = ['', 'Satu', 'Dua', 'Tiga', 'Empat', 'Lima']
-
-function getDailyLesson() {
-  const dayOfYear = Math.floor(Date.now() / 86400000)
-  return DAILY_LESSONS[dayOfYear % DAILY_LESSONS.length]
+// Inline SVG star for the stars-earned display
+function StarIcon({ filled, size = 22 }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path
+        d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"
+        fill={filled ? '#FFD700' : 'rgba(255,255,255,0.2)'}
+        stroke={filled ? '#C8900A' : 'rgba(255,255,255,0.3)'}
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  )
 }
 
+// Floating food particles in the background
 const FLOATIES = [
-  { e: '🍰', style: { top: '7%',  left: '5%'  }, delay: 0,   dur: 4.0, size: 38 },
-  { e: '⭐',  style: { top: '10%', right: '6%' }, delay: 0.6, dur: 3.3, size: 30 },
-  { e: '🍓', style: { top: '72%', left: '4%'  }, delay: 1.1, dur: 4.1, size: 34 },
-  { e: '🍪', style: { top: '68%', right: '5%' }, delay: 0.4, dur: 3.7, size: 36 },
-  { e: '✨', style: { top: '44%', left: '3%'  }, delay: 1.0, dur: 2.9, size: 28 },
-  { e: '🥚', style: { top: '38%', right: '4%' }, delay: 1.5, dur: 3.8, size: 32 },
+  { emoji: '🥞', x: '8%',  y: '12%', size: 36, delay: 0,    dur: 4.2, rot: -15 },
+  { emoji: '⭐', x: '88%', y: '9%',  size: 28, delay: 0.6,  dur: 3.5, rot: 10  },
+  { emoji: '🍕', x: '6%',  y: '55%', size: 34, delay: 1.1,  dur: 4.0, rot: 20  },
+  { emoji: '🎂', x: '86%', y: '52%', size: 32, delay: 0.3,  dur: 3.8, rot: -10 },
+  { emoji: '🍔', x: '5%',  y: '82%', size: 30, delay: 1.4,  dur: 4.3, rot: 8   },
+  { emoji: '✨', x: '90%', y: '80%', size: 26, delay: 0.8,  dur: 3.2, rot: 0   },
+  { emoji: '🍓', x: '45%', y: '5%',  size: 28, delay: 1.8,  dur: 3.9, rot: -5  },
 ]
 
-const Floaties = memo(function Floaties() {
+const Floaties = memo(function Floaties({ mounted }) {
   return FLOATIES.map((f, i) => (
     <div
       key={i}
-      className="absolute pointer-events-none"
       aria-hidden="true"
       style={{
-        ...f.style,
-        opacity:   0.85,
-        animation: `ambientFloat ${f.dur}s ${f.delay}s ease-in-out infinite`,
-        filter:    'drop-shadow(0 2px 6px rgba(0,0,0,0.12))',
+        position:     'absolute',
+        left:          f.x,
+        top:           f.y,
+        fontSize:      f.size,
+        transform:    `rotate(${f.rot}deg)`,
+        opacity:       mounted ? 0.82 : 0,
+        transition:   `opacity 0.6s ease ${i * 0.08}s`,
+        animation:    mounted ? `ambientFloat ${f.dur}s ${f.delay}s ease-in-out infinite` : 'none',
+        filter:       'drop-shadow(0 3px 8px rgba(0,0,0,0.18))',
+        pointerEvents: 'none',
+        zIndex:        1,
+        lineHeight:    1,
       }}
     >
-      <GameSprite emoji={f.e} size={f.size} />
+      {f.emoji}
     </div>
   ))
 })
 
-// Mini "Belajar Hari Ini" card shown on home screen
-function DailyLessonCard({ lesson }) {
-  const [tab, setTab] = useState('color')
-
+// Stars row — shows total stars earned across all recipes
+function StarsRow({ totalStars, maxStars = 12 }) {
+  const filled = Math.min(totalStars, maxStars)
   return (
-    <div style={{
-      background:   'rgba(255,252,240,0.96)',
-      borderRadius:  24,
-      padding:      '14px 20px',
-      boxShadow:    '0 4px 20px rgba(80,40,10,0.12)',
-      border:       '2px solid rgba(255,200,100,0.4)',
-      width:        '100%',
-      maxWidth:      340,
-    }}>
-      {/* Header */}
-      <p style={{
-        fontFamily:    "'Nunito', sans-serif",
-        fontWeight:     800,
-        fontSize:      '0.72rem',
-        color:         'rgba(61,43,31,0.5)',
-        margin:        '0 0 10px',
-        textTransform: 'uppercase',
-        letterSpacing: '0.1em',
-        textAlign:     'center',
-      }}>
-        📚 Belajar Hari Ini
-      </p>
-
-      {/* Tab pills */}
-      <div style={{ display: 'flex', gap: 6, justifyContent: 'center', marginBottom: 12 }}>
-        {[
-          { key: 'color',  label: '🎨 Warna' },
-          { key: 'number', label: '🔢 Nombor' },
-          { key: 'shape',  label: '🔷 Bentuk' },
-        ].map(t => (
-          <button
-            key={t.key}
-            type="button"
-            onClick={() => setTab(t.key)}
-            style={{
-              fontFamily:  "'Nunito', sans-serif",
-              fontWeight:   800,
-              fontSize:    '0.7rem',
-              padding:     '4px 10px',
-              borderRadius: 999,
-              border:      'none',
-              cursor:      'pointer',
-              background:  tab === t.key ? '#FF8C5A' : 'rgba(61,43,31,0.08)',
-              color:       tab === t.key ? '#fff' : 'rgba(61,43,31,0.6)',
-              transition:  'all 0.2s ease',
-              touchAction: 'manipulation',
-            }}
-          >
-            {t.label}
-          </button>
-        ))}
-      </div>
-
-      {/* Content */}
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 16, minHeight: 72 }}>
-        {tab === 'color' && (
-          <>
-            <div style={{
-              width:        64,
-              height:       64,
-              borderRadius: '50%',
-              background:   lesson.color,
-              boxShadow:    `0 4px 16px ${lesson.color}66`,
-              display:      'flex',
-              alignItems:   'center',
-              justifyContent: 'center',
-              fontSize:     '2rem',
-              flexShrink:    0,
-            }}>
-              {lesson.colorEmoji}
-            </div>
-            <div>
-              <p style={{ margin: 0, fontFamily: "'Nunito', sans-serif", fontSize: '0.78rem', fontWeight: 700, color: 'rgba(61,43,31,0.5)' }}>Warna</p>
-              <p style={{ margin: 0, fontFamily: "'Fredoka One', 'Nunito', sans-serif", fontSize: '2rem', fontWeight: 900, color: '#3D2B1F' }}>
-                {lesson.colorName}
-              </p>
-            </div>
-          </>
-        )}
-
-        {tab === 'number' && (
-          <>
-            <div style={{
-              width:        64,
-              height:       64,
-              borderRadius:  16,
-              background:   'linear-gradient(135deg, #FF8C5A, #E8527A)',
-              display:      'flex',
-              alignItems:   'center',
-              justifyContent:'center',
-              flexShrink:    0,
-              boxShadow:    '0 4px 16px rgba(255,140,90,0.4)',
-            }}>
-              <span style={{ fontFamily: "'Fredoka One', sans-serif", fontSize: '2.8rem', color: '#fff', lineHeight: 1 }}>
-                {lesson.number}
-              </span>
-            </div>
-            <div>
-              <p style={{ margin: 0, fontFamily: "'Nunito', sans-serif", fontSize: '0.78rem', fontWeight: 700, color: 'rgba(61,43,31,0.5)' }}>Nombor</p>
-              <p style={{ margin: 0, fontFamily: "'Fredoka One', 'Nunito', sans-serif", fontSize: '2rem', fontWeight: 900, color: '#3D2B1F' }}>
-                {MALAY_NUMBERS[lesson.number]}
-              </p>
-            </div>
-          </>
-        )}
-
-        {tab === 'shape' && (
-          <>
-            <div style={{ fontSize: '3.5rem', flexShrink: 0 }}>{lesson.shape}</div>
-            <div>
-              <p style={{ margin: 0, fontFamily: "'Nunito', sans-serif", fontSize: '0.78rem', fontWeight: 700, color: 'rgba(61,43,31,0.5)' }}>Bentuk</p>
-              <p style={{ margin: 0, fontFamily: "'Fredoka One', 'Nunito', sans-serif", fontSize: '2rem', fontWeight: 900, color: '#3D2B1F' }}>
-                {lesson.shapeName}
-              </p>
-            </div>
-          </>
-        )}
-      </div>
+    <div style={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+      {Array.from({ length: Math.min(maxStars, 6) }).map((_, i) => (
+        <StarIcon key={i} filled={i < filled} size={20} />
+      ))}
+      {totalStars > 0 && (
+        <span style={{
+          fontFamily:  "'Fredoka One', sans-serif",
+          fontSize:    '0.9rem',
+          color:       '#FFD700',
+          textShadow:  '0 1px 4px rgba(0,0,0,0.4)',
+          marginLeft:   4,
+        }}>
+          ×{totalStars}
+        </span>
+      )}
     </div>
   )
 }
@@ -192,16 +84,19 @@ function DailyLessonCard({ lesson }) {
 export function HomeScreen() {
   const { isSpeaking, isUnlocked } = useVoiceContext()
   const { goToRecipeSelect, openSettings } = useGameContext()
-  const { progress } = useProgressContext()
+  const { progress, getStarsForRecipe } = useProgressContext()
 
   const [expression, setExpression] = useState(OYEN_EXPRESSION.HAPPY)
   const [showBubble, setShowBubble] = useState(false)
   const [bubbleText, setBubbleText] = useState('')
   const [mounted,    setMounted]    = useState(false)
+  const [playPressed, setPlayPressed] = useState(false)
 
   const hasSpokenRef   = useRef(false)
   const bubbleTimerRef = useRef(null)
-  const lesson = getDailyLesson()
+
+  const totalStars = ['pancake', 'cake', 'pizza', 'burger']
+    .reduce((acc, id) => acc + (getStarsForRecipe?.(id) ?? 0), 0)
 
   useEffect(() => {
     const t = setTimeout(() => setMounted(true), 60)
@@ -210,7 +105,7 @@ export function HomeScreen() {
 
   useEffect(() => () => clearTimeout(bubbleTimerRef.current), [])
 
-  const showSpeechBubble = useCallback((text, ms = 3200) => {
+  const showSpeechBubble = useCallback((text, ms = 3000) => {
     clearTimeout(bubbleTimerRef.current)
     setBubbleText(text)
     setShowBubble(true)
@@ -233,13 +128,11 @@ export function HomeScreen() {
   }, [isUnlocked, triggerWelcome])
 
   const handleOyenTap = useCallback(() => {
-    triggerWelcome()
-    if (hasSpokenRef.current) {
-      sfx.play('meow')
-      setExpression(OYEN_EXPRESSION.CHEEKY)
-      showSpeechBubble('Hehe~ 😼')
-      setTimeout(() => setExpression(OYEN_EXPRESSION.HAPPY), 800)
-    }
+    if (!hasSpokenRef.current) { triggerWelcome(); return }
+    sfx.play('meow')
+    setExpression(OYEN_EXPRESSION.CHEEKY)
+    showSpeechBubble('Hehe~ 😼')
+    setTimeout(() => setExpression(OYEN_EXPRESSION.HAPPY), 800)
   }, [triggerWelcome, showSpeechBubble])
 
   const handlePlay = useCallback(() => {
@@ -250,152 +143,228 @@ export function HomeScreen() {
 
   const fadeUp = (i) => ({
     opacity:    mounted ? 1 : 0,
-    transform:  mounted ? 'translateY(0)' : 'translateY(20px)',
-    transition: `opacity 0.45s ease ${i * 0.1}s, transform 0.45s cubic-bezier(0.34,1.3,0.64,1) ${i * 0.1}s`,
+    transform:  mounted ? 'translateY(0) scale(1)' : 'translateY(24px) scale(0.94)',
+    transition: `opacity 0.5s ease ${i * 0.09}s, transform 0.5s cubic-bezier(0.34,1.3,0.64,1) ${i * 0.09}s`,
   })
 
   return (
     <div className="relative w-full h-full flex flex-col overflow-hidden select-none">
 
-      {/* Kitchen background */}
-      <div className="absolute inset-0" aria-hidden="true">
-        <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '58%',
-                      background: 'linear-gradient(180deg, #FDF6E8, #F5E8CC)' }} />
-        <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '58%',
-                      backgroundImage: 'linear-gradient(rgba(200,160,100,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(200,160,100,0.1) 1px, transparent 1px)',
-                      backgroundSize: '48px 48px' }} />
-        <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, height: '45%',
-                      background: 'linear-gradient(180deg, #D4956A, #A0724A)',
-                      boxShadow: 'inset 0 6px 16px rgba(0,0,0,0.18)' }} />
-        <div style={{ position: 'absolute', bottom: '45%', left: 0, right: 0, height: 10,
-                      background: 'linear-gradient(180deg, rgba(0,0,0,0.2), transparent)' }} />
-      </div>
+      {/* Illustrated kitchen background */}
+      <KitchenScene className="absolute inset-0" />
 
-      <Floaties />
+      {/* Dark overlay to make content pop */}
+      <div className="absolute inset-0" style={{ background: 'rgba(0,0,0,0.18)', zIndex: 0 }} />
 
-      {/* Parent gate */}
+      {/* Floating food emojis */}
+      <Floaties mounted={mounted} />
+
+      {/* Parent gate (top-right corner, invisible tap zone) */}
       <div className="absolute top-0 right-0 z-50">
         <ParentGate onUnlock={openSettings}><div className="w-12 h-12" /></ParentGate>
       </div>
 
-      <div className="relative z-10 flex flex-col items-center justify-between w-full flex-1 px-5 pt-5 pb-5">
+      {/* Stars display (top-left) */}
+      <div
+        className="absolute top-3 left-4 z-20"
+        style={{ opacity: mounted ? 1 : 0, transition: 'opacity 0.5s ease 0.1s' }}
+      >
+        <div style={{
+          background:  'rgba(0,0,0,0.35)',
+          borderRadius: 999,
+          padding:     '5px 12px',
+          backdropFilter: 'blur(6px)',
+        }}>
+          <StarsRow totalStars={totalStars} />
+        </div>
+      </div>
 
-        {/* Title — Fredoka One font, bigger and rounder */}
-        <div className="text-center" style={fadeUp(0)}>
+      {/* Main content column */}
+      <div className="relative z-10 flex flex-col items-center justify-between w-full flex-1 px-5 pt-3 pb-5">
+
+        {/* ── GAME LOGO TITLE ── */}
+        <div style={{ textAlign: 'center', ...fadeUp(0) }}>
+          {/* Shimmer badge */}
           <div style={{
-            background:   'rgba(255,252,240,0.96)',
-            borderRadius:  22,
-            padding:      '10px 28px 14px',
-            boxShadow:    '0 6px 0 rgba(200,140,60,0.35), 0 8px 24px rgba(0,0,0,0.12)',
-            border:       '2px solid rgba(255,200,100,0.4)',
+            display:     'inline-flex',
+            alignItems:  'center',
+            gap:          6,
+            background:  'rgba(255,220,100,0.92)',
+            borderRadius: 999,
+            padding:     '4px 14px',
+            marginBottom: 6,
+            boxShadow:   '0 2px 8px rgba(200,140,0,0.4)',
           }}>
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8, marginBottom: 4 }}>
-              <GameSprite emoji="🍳" size={24} />
-              <p style={{ fontFamily: "'Nunito', sans-serif", fontWeight: 800, fontSize: '0.72rem',
-                           color: 'rgba(61,43,31,0.5)', letterSpacing: '0.12em',
-                           textTransform: 'uppercase', margin: 0 }}>
-                Selamat Datang ke
-              </p>
-              <GameSprite emoji="🍳" size={24} />
-            </div>
-            <h1 style={{
-              fontFamily: "'Fredoka One', 'Nunito', sans-serif",
-              fontSize:   '3.2rem',
-              fontWeight:  900,
-              lineHeight:  1,
-              color:      '#3D2B1F',
-              margin:      0,
-            }}>
-              Dapur
-            </h1>
-            <h1 style={{
-              fontFamily: "'Fredoka One', 'Nunito', sans-serif",
-              fontSize:   '3.6rem',
-              fontWeight:  900,
-              lineHeight:  1,
-              margin:      0,
-              background: 'linear-gradient(135deg, #FF8C5A 0%, #E8527A 45%, #FFD700 100%)',
+            <span style={{ fontSize: '0.8rem' }}>⭐</span>
+            <span style={{
+              fontFamily:  "'Nunito', sans-serif",
+              fontWeight:   900,
+              fontSize:    '0.7rem',
+              color:       '#7B4800',
+              letterSpacing:'0.08em',
+            }}>EDUCATIONAL COOKING GAME</span>
+            <span style={{ fontSize: '0.8rem' }}>⭐</span>
+          </div>
+
+          {/* Main logo panel */}
+          <div style={{
+            background:        'linear-gradient(160deg, rgba(255,252,240,0.95) 0%, rgba(255,240,200,0.95) 100%)',
+            borderRadius:       28,
+            padding:           '10px 28px 14px',
+            boxShadow:         '0 8px 0 rgba(160,90,20,0.45), 0 14px 36px rgba(0,0,0,0.28)',
+            border:            '3px solid rgba(255,210,100,0.6)',
+            backdropFilter:    'blur(12px)',
+            WebkitBackdropFilter: 'blur(12px)',
+          }}>
+            <div style={{
+              fontFamily:    "'Fredoka One', 'Nunito', sans-serif",
+              fontSize:      '2.6rem',
+              fontWeight:     900,
+              lineHeight:     1,
+              color:         '#3D2B1F',
+              letterSpacing: '-0.02em',
+            }}>Dapur</div>
+            <div style={{
+              fontFamily:    "'Fredoka One', 'Nunito', sans-serif",
+              fontSize:      '3.2rem',
+              fontWeight:     900,
+              lineHeight:     1,
+              letterSpacing: '-0.02em',
+              background:    'linear-gradient(135deg, #FF6B35 0%, #E8527A 50%, #FFD700 100%)',
               WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
-              backgroundClip: 'text',
-            }}>
-              Comel!
-            </h1>
+              WebkitTextFillColor:  'transparent',
+              backgroundClip:       'text',
+            }}>Comel! 🍳</div>
           </div>
         </div>
 
-        {/* Oyen + speech bubble */}
-        <div className="relative flex flex-col items-center" style={fadeUp(1)}>
+        {/* ── OYEN MASCOT (enlarged, central) ── */}
+        <div
+          className="relative flex flex-col items-center"
+          style={{ flex: 1, justifyContent: 'center', ...fadeUp(1) }}
+        >
+          {/* Speech bubble */}
           <div style={{
             opacity:    showBubble ? 1 : 0,
-            transform:  showBubble ? 'translateY(0) scale(1)' : 'translateY(8px) scale(0.92)',
-            transition: 'opacity 0.25s ease, transform 0.3s cubic-bezier(0.34,1.4,0.64,1)',
+            transform:  showBubble ? 'translateY(0) scale(1)' : 'translateY(10px) scale(0.88)',
+            transition: 'opacity 0.22s ease, transform 0.28s cubic-bezier(0.34,1.4,0.64,1)',
             pointerEvents: 'none',
-            marginBottom: '0.5rem',
+            marginBottom: '0.4rem',
           }}>
-            <div className="game-prompt">
-              <span style={{ fontSize: '1.05rem', fontWeight: 900, color: 'rgba(61,43,31,0.85)' }}>
-                {bubbleText}
-              </span>
+            <div
+              className="game-prompt"
+              style={{ fontSize: '1.05rem', fontWeight: 900, color: 'rgba(61,43,31,0.88)' }}
+            >
+              {bubbleText}
             </div>
           </div>
+
+          {/* Glow ring behind Oyen */}
+          <div style={{
+            position:     'absolute',
+            width:         220,
+            height:        220,
+            borderRadius: '50%',
+            background:   'radial-gradient(circle, rgba(255,200,100,0.35) 0%, transparent 70%)',
+            animation:    'ambientFloat 3.5s ease-in-out infinite',
+            pointerEvents: 'none',
+          }} />
+
           <Oyen expression={expression} size="xl" isSpeaking={isSpeaking} onClick={handleOyenTap} />
         </div>
 
-        {/* Daily Lesson Card */}
-        <div style={{ width: '100%', display: 'flex', justifyContent: 'center', ...fadeUp(2) }}>
-          <DailyLessonCard lesson={lesson} />
+        {/* ── RECIPE BADGES row ── */}
+        <div style={{ ...fadeUp(2), width: '100%' }}>
+          <div style={{
+            display:        'flex',
+            justifyContent: 'center',
+            gap:             8,
+            marginBottom:    14,
+          }}>
+            {[
+              { id: 'pancake', emoji: '🥞', label: 'Pancake' },
+              { id: 'cake',    emoji: '🎂', label: 'Kek'     },
+              { id: 'pizza',   emoji: '🍕', label: 'Pizza'   },
+              { id: 'burger',  emoji: '🍔', label: 'Burger'  },
+            ].map(r => {
+              const stars = getStarsForRecipe?.(r.id) ?? 0
+              return (
+                <div key={r.id} style={{
+                  display:       'flex',
+                  flexDirection: 'column',
+                  alignItems:    'center',
+                  gap:            2,
+                  background:    stars > 0 ? 'rgba(255,220,80,0.25)' : 'rgba(0,0,0,0.3)',
+                  borderRadius:   16,
+                  padding:       '8px 10px',
+                  border:        stars > 0 ? '2px solid rgba(255,220,80,0.6)' : '2px solid rgba(255,255,255,0.12)',
+                  backdropFilter: 'blur(6px)',
+                  minWidth:       58,
+                }}>
+                  <span style={{ fontSize: '1.5rem', lineHeight: 1 }}>{r.emoji}</span>
+                  <div style={{ display: 'flex', gap: 1 }}>
+                    {[1,2,3].map(n => (
+                      <StarIcon key={n} filled={n <= stars} size={12} />
+                    ))}
+                  </div>
+                  <span style={{
+                    fontFamily: "'Nunito', sans-serif",
+                    fontSize:   '0.58rem',
+                    fontWeight:  800,
+                    color:      stars > 0 ? '#FFD700' : 'rgba(255,255,255,0.5)',
+                    lineHeight:  1,
+                  }}>{r.label}</span>
+                </div>
+              )
+            })}
+          </div>
         </div>
 
-        {/* Play button — bigger for toddlers */}
-        <div className="flex flex-col items-center gap-2 w-full" style={{ maxWidth: 320, ...fadeUp(3) }}>
+        {/* ── PLAY BUTTON ── */}
+        <div style={{ width: '100%', maxWidth: 340, ...fadeUp(3) }}>
           <button
             type="button"
-            onClick={handlePlay}
             aria-label="Mula masak bersama Oyen"
+            onPointerDown={() => setPlayPressed(true)}
+            onPointerUp={() => { setPlayPressed(false); handlePlay() }}
+            onPointerLeave={() => setPlayPressed(false)}
+            onPointerCancel={() => setPlayPressed(false)}
             style={{
-              width:        '100%',
-              height:        90,
-              borderRadius:  24,
-              background:   'linear-gradient(135deg, #FF8C5A, #E8527A)',
-              border:       'none',
-              boxShadow:    '0 6px 0 #C02858, 0 8px 24px rgba(232,82,122,0.35)',
-              fontFamily:   "'Fredoka One', 'Nunito', sans-serif",
-              fontSize:     '1.8rem',
-              fontWeight:    900,
-              color:        '#fff',
-              cursor:       'pointer',
-              touchAction:  'manipulation',
-              display:      'flex',
-              alignItems:   'center',
+              width:         '100%',
+              height:         88,
+              borderRadius:   28,
+              background:    'linear-gradient(160deg, #FF8C5A 0%, #E8527A 100%)',
+              border:        'none',
+              boxShadow:     playPressed
+                ? '0 2px 0 #881840, 0 4px 16px rgba(232,82,122,0.35)'
+                : '0 7px 0 #AA1840, 0 10px 30px rgba(232,82,122,0.45)',
+              fontFamily:    "'Fredoka One', 'Nunito', sans-serif",
+              fontSize:      '2rem',
+              fontWeight:     900,
+              color:         '#fff',
+              cursor:        'pointer',
+              touchAction:   'manipulation',
+              display:       'flex',
+              alignItems:    'center',
               justifyContent:'center',
-              gap:           10,
-              textShadow:   '0 2px 4px rgba(0,0,0,0.2)',
-              transition:   'transform 0.1s ease, box-shadow 0.1s ease',
-            }}
-            onPointerDown={e => {
-              e.currentTarget.style.transform = 'translateY(4px)'
-              e.currentTarget.style.boxShadow = '0 2px 0 #C02858, 0 4px 12px rgba(232,82,122,0.25)'
-            }}
-            onPointerUp={e => {
-              e.currentTarget.style.transform = ''
-              e.currentTarget.style.boxShadow = ''
-              handlePlay()
-            }}
-            onPointerLeave={e => {
-              e.currentTarget.style.transform = ''
-              e.currentTarget.style.boxShadow = ''
+              gap:            12,
+              textShadow:    '0 2px 6px rgba(0,0,0,0.25)',
+              transform:     playPressed ? 'translateY(5px)' : 'translateY(0)',
+              transition:    'transform 80ms ease, box-shadow 80ms ease',
             }}
           >
-            <GameSprite emoji="🍳" size={30} /> Jom Masak!
+            <span style={{ fontSize: '2rem' }}>🍳</span>
+            Jom Masak!
+            <span style={{ fontSize: '1.8rem' }}>▶</span>
           </button>
 
           <p style={{
             fontFamily: "'Nunito', sans-serif",
-            fontSize:   '0.8rem',
+            fontSize:   '0.78rem',
             fontWeight:  700,
-            color:      'rgba(61,43,31,0.4)',
+            color:      'rgba(255,255,255,0.55)',
             textAlign:  'center',
+            marginTop:   8,
           }}>
             Untuk kanak-kanak 2–3 tahun 👶
           </p>

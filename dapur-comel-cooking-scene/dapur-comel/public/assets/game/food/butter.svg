@@ -1,13 +1,44 @@
-<svg id="emoji" viewBox="0 0 72 72" xmlns="http://www.w3.org/2000/svg">
-  <g id="color">
-    <path fill="#fcea2b" d="M19,33a3.416,3.416,0,0,0-3.3141,2.9835l-1.3718,13.033A2.65,2.65,0,0,0,17,52H55a2.65,2.65,0,0,0,2.6859-2.9835l-1.3718-13.033A3.416,3.416,0,0,0,53,33Z"/>
-    <polyline fill="#fff" points="12.251 52 60.189 52 58 56 13.616 56 12.251 52"/>
-  </g>
-  <g id="line">
-    <path fill="none" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19,33a3.416,3.416,0,0,0-3.3141,2.9835l-1.3718,13.033A2.65,2.65,0,0,0,17,52H55a2.65,2.65,0,0,0,2.6859-2.9835l-1.3718-13.033A3.416,3.416,0,0,0,53,33Z"/>
-    <polyline fill="none" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" points="11.38 52 14.448 52 36 52"/>
-    <path fill="none" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M36,56H15a2.4394,2.4394,0,0,1-1.82-.5833l-.2389-.2381L9.0074,47.17,4.88,47.1514"/>
-    <polyline fill="none" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" points="60.62 52 57.552 52 36 52"/>
-    <path fill="none" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M36,56H57a2.4394,2.4394,0,0,0,1.82-.5833l.2389-.2381,3.934-8.0083,4.1271-.0189"/>
-  </g>
+<svg viewBox="0 0 160 130" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <radialGradient id="bt-body" cx="36%" cy="28%" r="70%">
+      <stop offset="0%" stop-color="#FFFACC"/>
+      <stop offset="100%" stop-color="#F0C830"/>
+    </radialGradient>
+    <radialGradient id="bt-top" cx="40%" cy="30%" r="65%">
+      <stop offset="0%" stop-color="#FFFD80"/>
+      <stop offset="100%" stop-color="#F5D840"/>
+    </radialGradient>
+    <radialGradient id="bt-wrap" cx="40%" cy="30%" r="65%">
+      <stop offset="0%" stop-color="#F0C0A0"/>
+      <stop offset="100%" stop-color="#CC8040"/>
+    </radialGradient>
+  </defs>
+  <!-- Drop shadow -->
+  <ellipse cx="80" cy="122" rx="58" ry="7" fill="rgba(0,0,0,0.13)"/>
+
+  <!-- Wrapper paper (bottom fold visible) -->
+  <rect x="20" y="68" width="120" height="50" rx="8" fill="url(#bt-wrap)" stroke="#2A1A0E" stroke-width="3"/>
+
+  <!-- Butter block body -->
+  <rect x="20" y="36" width="120" height="60" rx="8" fill="url(#bt-body)" stroke="#2A1A0E" stroke-width="3.5"/>
+  <!-- Body shadow right side -->
+  <rect x="118" y="40" width="16" height="52" rx="4" fill="rgba(180,130,0,0.2)" />
+
+  <!-- Top face of butter -->
+  <rect x="20" y="28" width="120" height="16" rx="6" fill="url(#bt-top)" stroke="#2A1A0E" stroke-width="3.5"/>
+  <!-- Top highlight -->
+  <ellipse cx="64" cy="34" rx="30" ry="5" fill="rgba(255,255,200,0.6)"/>
+
+  <!-- Wrapper label band -->
+  <rect x="20" y="64" width="120" height="12" rx="0" fill="rgba(200,120,40,0.6)" stroke="none"/>
+  <rect x="20" y="64" width="120" height="12" rx="0" fill="none" stroke="#2A1A0E" stroke-width="1.5"/>
+  <!-- Label text lines -->
+  <rect x="38" y="67" width="48" height="3" rx="1.5" fill="rgba(255,255,200,0.7)"/>
+  <rect x="38" y="72" width="32" height="3" rx="1.5" fill="rgba(255,255,200,0.5)"/>
+
+  <!-- Knife slice mark on top -->
+  <path d="M30,34 L130,34" stroke="rgba(200,160,0,0.3)" stroke-width="2" stroke-dasharray="6 4"/>
+
+  <!-- Soft melt drip on front right -->
+  <path d="M126,44 Q130,52 128,60 Q129,66 132,60 Q133,52 136,44Z" fill="url(#bt-top)" stroke="#C8900A" stroke-width="1.5" opacity="0.85"/>
 </svg>

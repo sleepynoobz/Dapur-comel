@@ -1,20 +1,73 @@
-<svg id="emoji" viewBox="0 0 72 72" xmlns="http://www.w3.org/2000/svg">
-  <g id="color">
-    <ellipse cx="35.7188" cy="41.8594" rx="24.2813" ry="10.9844" fill="#d0cfce"/>
-    <ellipse cx="35.7188" cy="29.7187" rx="19.6563" ry="8.0938" fill="#fcea2b"/>
-    <ellipse cx="35.7188" cy="25.0938" rx="19.6563" ry="8.0938" fill="#fcea2b"/>
-    <ellipse cx="35.7188" cy="31.0312" rx="19.6563" ry="8.0938" fill="#fcea2b" stroke="#fcea2b" stroke-miterlimit="10" stroke-width="2"/>
-    <ellipse cx="35.7188" cy="40.125" rx="19.6563" ry="8.0938" fill="#fcea2b" stroke="#fcea2b" stroke-miterlimit="10" stroke-width="2"/>
-    <ellipse cx="35.7188" cy="35.5" rx="19.6563" ry="8.0938" fill="#fcea2b" stroke="#fcea2b" stroke-miterlimit="10" stroke-width="2"/>
-    <path fill="#f1b31c" d="M38.6094,25.0937c-4.1508,0-7.5156,1.8119-7.5156,4.0469,0,1.6833,1.9094,3.1258,4.625,3.7357v4.3581a1.7344,1.7344,0,0,0,3.4687,0v2.3125a1.7344,1.7344,0,0,0,3.4687,0V36.0781a1.7344,1.7344,0,0,0,3.4688,0V29.1406C46.125,26.9056,42.76,25.0937,38.6094,25.0937ZM42.65,32.5491l.0061-.002v.0623C42.6562,32.5888,42.6508,32.57,42.65,32.5491Z"/>
-  </g>
-  <g id="line">
-    <path fill="none" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M35.4059,34.3427q-.5911-.0037-1.1735-.0217c-10.1615-.3129-18.17-3.8068-18.17-8.071,0-4.47,8.8-8.0938,19.6563-8.0938S55.375,21.78,55.375,26.25c0,2.884-3.6633,5.4157-9.1784,6.8492"/>
-    <path fill="none" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M36.875,38.9687c-10.8558,0-20.8125-3.6236-20.8125-8.0937"/>
-    <path fill="none" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M55.375,30.875c0,2.3681-2.47,4.4987-6.4069,5.9788-.6809.256-2.08.7438-2.8431.9587"/>
-    <path fill="none" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M55.375,35.5c0,4.47-8.8,8.0938-19.6562,8.0938S16.0625,39.97,16.0625,35.5"/>
-    <path fill="none" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M55.375,40.125c0,4.47-8.8,8.0938-19.6562,8.0938S16.0625,44.5951,16.0625,40.125"/>
-    <path fill="none" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M58.8438,43.0156C58.8438,49.0821,48.49,54,35.7188,54S12.5937,49.0821,12.5937,43.0156"/>
-    <path fill="none" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M38.6094,25.0937c-4.1508,0-7.5156,1.8119-7.5156,4.0469,0,1.6833,1.9094,3.1258,4.625,3.7357v4.3581a1.7344,1.7344,0,0,0,3.4687,0v2.3125a1.7344,1.7344,0,0,0,3.4687,0V36.0781a1.7344,1.7344,0,0,0,3.4688,0V29.1406C46.125,26.9056,42.76,25.0937,38.6094,25.0937Z"/>
-  </g>
+<svg viewBox="0 0 200 170" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <radialGradient id="pc-top" cx="38%" cy="30%" r="65%">
+      <stop offset="0%" stop-color="#FFD085"/>
+      <stop offset="100%" stop-color="#D4840A"/>
+    </radialGradient>
+    <radialGradient id="pc-mid" cx="38%" cy="30%" r="65%">
+      <stop offset="0%" stop-color="#E8960F"/>
+      <stop offset="100%" stop-color="#C07210"/>
+    </radialGradient>
+    <radialGradient id="pc-bot" cx="38%" cy="30%" r="65%">
+      <stop offset="0%" stop-color="#D4840A"/>
+      <stop offset="100%" stop-color="#A05800"/>
+    </radialGradient>
+    <radialGradient id="pc-butter" cx="35%" cy="30%" r="65%">
+      <stop offset="0%" stop-color="#FFF3A0"/>
+      <stop offset="100%" stop-color="#F5C842"/>
+    </radialGradient>
+  </defs>
+
+  <!-- Drop shadow -->
+  <ellipse cx="100" cy="162" rx="72" ry="8" fill="rgba(0,0,0,0.13)"/>
+
+  <!-- Bottom pancake -->
+  <ellipse cx="100" cy="138" rx="72" ry="14" fill="url(#pc-bot)" stroke="#2A1A0E" stroke-width="3.5"/>
+  <ellipse cx="82" cy="130" rx="28" ry="6" fill="rgba(255,220,120,0.3)" transform="rotate(-5 82 130)"/>
+
+  <!-- Bottom syrup drips -->
+  <path d="M56,138 Q54,148 55,155 Q56,160 58,155 Q59,148 60,138Z" fill="#8B4513" stroke="#2A1A0E" stroke-width="1.5"/>
+  <path d="M76,140 Q74,152 76,158 Q78,162 80,158 Q81,152 82,140Z" fill="#8B4513" stroke="#2A1A0E" stroke-width="1.5"/>
+  <path d="M138,138 Q140,150 139,156 Q140,160 142,156 Q143,150 144,138Z" fill="#8B4513" stroke="#2A1A0E" stroke-width="1.5"/>
+
+  <!-- Middle pancake -->
+  <ellipse cx="100" cy="112" rx="68" ry="14" fill="url(#pc-mid)" stroke="#2A1A0E" stroke-width="3.5"/>
+  <ellipse cx="84" cy="104" rx="26" ry="5.5" fill="rgba(255,220,120,0.3)" transform="rotate(-5 84 104)"/>
+
+  <!-- Middle syrup drips -->
+  <path d="M48,112 Q46,122 47,130 Q48,135 50,130 Q51,122 52,112Z" fill="#8B4513" stroke="#2A1A0E" stroke-width="1.5"/>
+  <path d="M142,112 Q144,124 142,131 Q143,136 146,131 Q147,124 148,112Z" fill="#8B4513" stroke="#2A1A0E" stroke-width="1.5"/>
+  <path d="M112,113 Q114,125 112,132 Q113,137 116,132 Q117,125 118,113Z" fill="#8B4513" stroke="#2A1A0E" stroke-width="1.5"/>
+
+  <!-- Top pancake -->
+  <ellipse cx="100" cy="88" rx="64" ry="14" fill="url(#pc-top)" stroke="#2A1A0E" stroke-width="3.5"/>
+  <!-- Surface bubble texture -->
+  <circle cx="78" cy="84" r="4" fill="rgba(180,100,0,0.25)" stroke="rgba(120,60,0,0.2)" stroke-width="1"/>
+  <circle cx="96" cy="80" r="3.5" fill="rgba(180,100,0,0.25)" stroke="rgba(120,60,0,0.2)" stroke-width="1"/>
+  <circle cx="116" cy="84" r="4" fill="rgba(180,100,0,0.25)" stroke="rgba(120,60,0,0.2)" stroke-width="1"/>
+  <circle cx="90" cy="92" r="3" fill="rgba(180,100,0,0.2)" stroke="rgba(120,60,0,0.15)" stroke-width="1"/>
+  <circle cx="110" cy="91" r="2.5" fill="rgba(180,100,0,0.2)" stroke="rgba(120,60,0,0.15)" stroke-width="1"/>
+  <ellipse cx="84" cy="82" rx="24" ry="5" fill="rgba(255,240,160,0.45)" transform="rotate(-5 84 82)"/>
+
+  <!-- Syrup pool on top -->
+  <ellipse cx="100" cy="86" rx="38" ry="8" fill="#8B4513" stroke="#2A1A0E" stroke-width="2.5" opacity="0.88"/>
+  <ellipse cx="88" cy="84" rx="14" ry="3.5" fill="rgba(255,200,100,0.35)"/>
+  <!-- Syrup drips from top -->
+  <path d="M74,90 Q72,100 73,108 Q74,113 76,108 Q77,100 78,90Z" fill="#8B4513" stroke="#2A1A0E" stroke-width="1.5"/>
+  <path d="M126,90 Q128,102 126,109 Q127,114 130,109 Q131,102 132,90Z" fill="#8B4513" stroke="#2A1A0E" stroke-width="1.5"/>
+
+  <!-- Butter pat -->
+  <rect x="88" y="70" width="30" height="16" rx="5" fill="url(#pc-butter)" stroke="#2A1A0E" stroke-width="2.5"/>
+  <ellipse cx="97" cy="74" rx="8" ry="3" fill="rgba(255,255,220,0.7)"/>
+  <!-- Butter melt pools -->
+  <path d="M88,82 Q85,88 88,90 Q90,88 90,82Z" fill="#F5C842" stroke="#C8900A" stroke-width="1" opacity="0.8"/>
+  <path d="M118,82 Q121,88 118,90 Q116,88 116,82Z" fill="#F5C842" stroke="#C8900A" stroke-width="1" opacity="0.8"/>
+
+  <!-- Blueberry accents -->
+  <circle cx="62" cy="86" r="5.5" fill="#5B3A8C" stroke="#2A1A0E" stroke-width="2"/>
+  <circle cx="62" cy="86" r="2" fill="rgba(180,140,255,0.5)"/>
+  <circle cx="140" cy="86" r="5.5" fill="#5B3A8C" stroke="#2A1A0E" stroke-width="2"/>
+  <circle cx="140" cy="86" r="2" fill="rgba(180,140,255,0.5)"/>
+  <circle cx="70" cy="93" r="4.5" fill="#5B3A8C" stroke="#2A1A0E" stroke-width="2"/>
+  <circle cx="70" cy="93" r="1.8" fill="rgba(180,140,255,0.5)"/>
 </svg>

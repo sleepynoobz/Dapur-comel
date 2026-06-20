@@ -10,9 +10,10 @@
  */
 
 import { useEffect, useRef, useCallback, useState, memo } from 'react'
-import { Oyen }       from '../components/mascot/Oyen.jsx'
-import { GameSprite } from '../components/ui/GameSprite.jsx'
-import { ParentGate } from '../components/gates/ParentGate.jsx'
+import { Oyen }         from '../components/mascot/Oyen.jsx'
+import { GameSprite }   from '../components/ui/GameSprite.jsx'
+import { KitchenScene } from '../components/ui/KitchenScene.jsx'
+import { ParentGate }   from '../components/gates/ParentGate.jsx'
 import {
   useVoiceContext, useGameContext, useProgressContext,
 } from '../App.jsx'
@@ -66,35 +67,6 @@ const RECIPE_CARDS = [
   },
 ]
 
-const BG_ITEMS = ['🍳', '✨', '🧁', '🔪', '⭐', '🫙']
-
-const FloatingBg = memo(function FloatingBg() {
-  return (
-    <div className="absolute inset-0 pointer-events-none overflow-hidden" aria-hidden="true">
-      <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '55%',
-                    background: 'linear-gradient(180deg, #FDF6E8, #F5E8CC)' }} />
-      <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '55%',
-                    backgroundImage: 'linear-gradient(rgba(200,160,100,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(200,160,100,0.1) 1px, transparent 1px)',
-                    backgroundSize: '48px 48px' }} />
-      <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, height: '48%',
-                    background: 'linear-gradient(180deg, #D4956A, #A0724A)',
-                    boxShadow: 'inset 0 6px 16px rgba(0,0,0,0.18)' }} />
-      <div style={{ position: 'absolute', bottom: '48%', left: 0, right: 0, height: 10,
-                    background: 'linear-gradient(180deg, rgba(0,0,0,0.2), transparent)' }} />
-      {BG_ITEMS.map((e, i) => (
-        <div key={i} style={{
-          position: 'absolute',
-          fontSize: i % 2 === 0 ? '1.3rem' : '1rem',
-          top:  `${6 + i * 7}%`,
-          left: i < 3 ? `${3 + i * 2}%` : undefined,
-          right: i >= 3 ? `${3 + (i - 3) * 2}%` : undefined,
-          opacity: 0.1,
-          animation: `ambientFloat ${3.5 + i * 0.6}s ${i * 0.3}s ease-in-out infinite`,
-        }}>{e}</div>
-      ))}
-    </div>
-  )
-})
 
 function DifficultyStars({ count }) {
   return (
@@ -140,29 +112,38 @@ export function RecipeSelectScreen() {
   return (
     <div className="relative w-full h-full flex flex-col overflow-hidden select-none">
 
-      <FloatingBg />
+      <KitchenScene className="absolute inset-0" />
+      <div className="absolute inset-0" style={{ background: 'rgba(0,0,0,0.14)' }} />
 
       {/* Parent gate */}
       <div className="absolute top-0 right-0 z-50">
         <ParentGate onUnlock={openSettings}><div className="w-12 h-12" /></ParentGate>
       </div>
 
-      {/* Oyen header */}
+      {/* Header bar */}
       <div
-        className="relative z-10 flex items-center gap-3 px-4 pt-4 pb-2"
+        className="relative z-10 flex items-center gap-3 px-4 pt-3 pb-1"
         style={{ opacity: mounted ? 1 : 0, transition: 'opacity 0.2s ease' }}
       >
         <Oyen expression={expression} size="sm" isSpeaking={isSpeaking}
               onClick={() => setExpression(OYEN_EXPRESSION.CHEEKY)} />
-        <div className="game-prompt flex-1">
-          <span style={{
-            fontFamily: "'Nunito', sans-serif",
-            fontSize:   '1.1rem',
-            fontWeight:  900,
-            color:      'rgba(61,43,31,0.85)',
+        <div style={{ flex: 1 }}>
+          <div style={{
+            background:  'rgba(255,252,240,0.94)',
+            borderRadius: 16,
+            padding:     '7px 16px',
+            boxShadow:   '0 4px 0 rgba(160,90,20,0.3), 0 6px 18px rgba(0,0,0,0.18)',
+            border:      '2px solid rgba(255,210,100,0.5)',
           }}>
-            Nak masak apa? 🤔
-          </span>
+            <span style={{
+              fontFamily: "'Fredoka One', 'Nunito', sans-serif",
+              fontSize:   '1.25rem',
+              fontWeight:  900,
+              color:      '#3D2B1F',
+            }}>
+              Pilih Resepi! 🍳
+            </span>
+          </div>
         </div>
       </div>
 
@@ -177,22 +158,24 @@ export function RecipeSelectScreen() {
               key={card.id}
               className="relative flex flex-col items-center justify-between overflow-hidden"
               style={{
-                background:   card.bg,
-                borderRadius:  28,
-                boxShadow:    pressed
-                  ? `0 2px 0 ${card.accent}, 0 4px 16px rgba(0,0,0,0.15)`
-                  : `0 7px 0 ${card.accent}, 0 10px 28px rgba(0,0,0,0.18)`,
-                border:       `2.5px solid ${card.color}44`,
-                transform:    pressed
-                  ? 'translateY(5px) scale(0.97)'
-                  : mounted ? 'translateY(0) scale(1)' : 'translateY(16px) scale(0.95)',
-                opacity:      mounted ? 1 : 0,
-                transition:   mounted
-                  ? `transform 80ms ease, box-shadow 80ms ease, opacity 0.25s ease ${i * 0.06}s`
-                  : `opacity 0.25s ease ${i * 0.06}s, transform 0.3s ease ${i * 0.06}s`,
-                touchAction:  'manipulation',
-                cursor:       'pointer',
-                minHeight:     160,
+                background:         card.bg,
+                borderRadius:        24,
+                boxShadow:          pressed
+                  ? `0 2px 0 ${card.accent}, 0 4px 16px rgba(0,0,0,0.18)`
+                  : `0 8px 0 ${card.accent}, 0 12px 32px rgba(0,0,0,0.22)`,
+                border:             `2px solid ${card.color}55`,
+                backdropFilter:     'blur(12px)',
+                WebkitBackdropFilter: 'blur(12px)',
+                transform:          pressed
+                  ? 'translateY(6px) scale(0.97)'
+                  : mounted ? 'translateY(0) scale(1)' : 'translateY(20px) scale(0.93)',
+                opacity:            mounted ? 1 : 0,
+                transition:         mounted
+                  ? `transform 80ms ease, box-shadow 80ms ease, opacity 0.28s ease ${i * 0.07}s`
+                  : `opacity 0.28s ease ${i * 0.07}s, transform 0.35s cubic-bezier(0.34,1.3,0.64,1) ${i * 0.07}s`,
+                touchAction:        'manipulation',
+                cursor:             'pointer',
+                minHeight:           170,
               }}
               onPointerDown={e => { if (e.isPrimary) handlePress(card.id) }}
               onPointerUp={e   => { if (e.isPrimary) handleRelease(card.id) }}
@@ -229,20 +212,38 @@ export function RecipeSelectScreen() {
                 {card.learnColor.emoji}
               </div>
 
-              {/* Emoji hero — bigger for toddlers */}
+              {/* Illustrated food hero */}
               <div style={{
-                width:        80,
-                height:       80,
-                borderRadius: '50%',
-                background:   'rgba(255,255,255,0.6)',
-                display:      'flex',
-                alignItems:   'center',
-                justifyContent:'center',
-                marginTop:     18,
-                boxShadow:    '0 4px 12px rgba(0,0,0,0.1)',
-                filter:       `drop-shadow(0 3px 8px ${card.color}55)`,
+                position:     'relative',
+                width:         100,
+                height:        100,
+                marginTop:      12,
               }} aria-hidden="true">
-                <GameSprite emoji={card.emoji} size={58} />
+                {/* Glow ring */}
+                <div style={{
+                  position:     'absolute',
+                  inset:        -6,
+                  borderRadius: '50%',
+                  background:   `radial-gradient(circle, ${card.color}40 0%, transparent 70%)`,
+                }} />
+                {/* Plate circle */}
+                <div style={{
+                  position:     'absolute',
+                  inset:         0,
+                  borderRadius: '50%',
+                  background:   'rgba(255,255,255,0.85)',
+                  boxShadow:    `0 6px 18px ${card.color}44, inset 0 2px 4px rgba(255,255,255,0.9)`,
+                  border:       `3px solid ${card.color}55`,
+                }} />
+                <div style={{
+                  position:     'absolute',
+                  inset:         0,
+                  display:      'flex',
+                  alignItems:   'center',
+                  justifyContent:'center',
+                }}>
+                  <GameSprite emoji={card.emoji} size={72} />
+                </div>
               </div>
 
               {/* Name + desc */}

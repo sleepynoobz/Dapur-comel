@@ -1,9 +1,41 @@
-<svg id="emoji" viewBox="0 0 72 72" xmlns="http://www.w3.org/2000/svg">
-  <g id="color">
-    <polygon fill="#fff" points="53.545 28 48.35 67 24.6 67 18.6794 28"/>
-    <polygon fill="#d0cfce" points="43.404 28 38.35 67 48.35 67 53.404 28"/>
-  </g>
-  <g id="line">
-    <path fill="none" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="2" d="m17,17L24.6,67L48.35,67L55,17"/>
-  </g>
+<svg viewBox="0 0 140 180" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <radialGradient id="mk-body" cx="35%" cy="25%" r="70%">
+      <stop offset="0%" stop-color="#FFFFFF"/>
+      <stop offset="100%" stop-color="#D8EEF8"/>
+    </radialGradient>
+    <radialGradient id="mk-cap" cx="40%" cy="30%" r="65%">
+      <stop offset="0%" stop-color="#FF9966"/>
+      <stop offset="100%" stop-color="#E85520"/>
+    </radialGradient>
+  </defs>
+  <!-- Drop shadow -->
+  <ellipse cx="70" cy="172" rx="40" ry="7" fill="rgba(0,0,0,0.13)"/>
+
+  <!-- Carton body -->
+  <path d="M32,60 L32,158 Q32,165 40,165 L100,165 Q108,165 108,158 L108,60 Z" fill="url(#mk-body)" stroke="#2A1A0E" stroke-width="3.5" stroke-linejoin="round"/>
+  <!-- Carton highlight -->
+  <rect x="38" y="66" width="18" height="90" rx="4" fill="rgba(255,255,255,0.6)"/>
+
+  <!-- Carton top fold -->
+  <path d="M32,60 L70,40 L108,60 L70,52 Z" fill="#E0EFF8" stroke="#2A1A0E" stroke-width="3" stroke-linejoin="round"/>
+
+  <!-- Cap / pour spout -->
+  <rect x="54" y="28" width="32" height="14" rx="5" fill="url(#mk-cap)" stroke="#2A1A0E" stroke-width="2.5"/>
+  <rect x="58" y="30" width="8" height="8" rx="2" fill="rgba(255,255,255,0.4)"/>
+
+  <!-- Label area -->
+  <rect x="38" y="80" width="64" height="62" rx="8" fill="#E6F4FF" stroke="#8CC8E8" stroke-width="2"/>
+  <!-- Cow spot decoration -->
+  <ellipse cx="62" cy="104" rx="12" ry="10" fill="#2A1A0E" opacity="0.85"/>
+  <ellipse cx="84" cy="98" rx="8" ry="7" fill="#2A1A0E" opacity="0.85"/>
+  <ellipse cx="80" cy="114" rx="9" ry="7" fill="#2A1A0E" opacity="0.85"/>
+  <!-- Label highlight -->
+  <rect x="42" y="84" width="20" height="6" rx="3" fill="rgba(255,255,255,0.7)"/>
+
+  <!-- SUSU text indicator line -->
+  <rect x="42" y="150" width="56" height="5" rx="2.5" fill="#8CC8E8" opacity="0.6"/>
+
+  <!-- Milk drip down side -->
+  <path d="M108,100 Q114,108 112,118 Q113,124 110,118 Q108,108 108,100Z" fill="white" stroke="#8CC8E8" stroke-width="1.5"/>
 </svg>
