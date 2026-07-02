@@ -19,9 +19,8 @@ import { hapticTap, hapticSuccess } from '../../../utils/haptics.js'
 import { sfx } from '../../../utils/audio.js'
 import { STEP } from '../../../utils/constants.js'
 import { LearnCard } from '../../../components/learning/LearnCard.jsx'
-import { ColorSpot } from '../../../components/learning/ColorSpot.jsx'
-import { ShapeTeach } from '../../../components/learning/ShapeTeach.jsx'
 import { GameSprite } from '../../../components/ui/GameSprite.jsx'
+import { ActionStage } from './ActionStage.jsx'
 
 const STEP_CONFIG = {
   [STEP.CRACK_EGG]:     { tapsNeeded: 2, mainEmoji: '🥚', successEmoji: '💛', bg: '#FFF9EC', borderColor: '#FFD700' },
@@ -34,104 +33,6 @@ const STEP_CONFIG = {
   [STEP.ADD_TOPPINGS]:  { tapsNeeded: 3, mainEmoji: '🧀', successEmoji: '⭐', bg: '#FFFFF0', borderColor: '#FFD700' },
   [STEP.STACK]:         { tapsNeeded: 4, mainEmoji: '🍔', successEmoji: '🌟', bg: '#FFF8EC', borderColor: '#C4521E' },
   [STEP.DECORATE]:      { tapsNeeded: 2, mainEmoji: '🎨', successEmoji: '✨', bg: '#FFF0F8', borderColor: '#E8527A' },
-}
-
-function TapTarget({ emoji, progress, tapsNeeded, pulsing, onTap }) {
-  const pct = tapsNeeded > 0 ? (progress / tapsNeeded) * 100 : 0
-  const size = 160
-
-  return (
-    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 20 }}>
-      {/* Progress ring around the big tap button */}
-      <div style={{ position: 'relative', width: size + 20, height: size + 20 }}>
-        {/* SVG progress ring */}
-        <svg
-          width={size + 20}
-          height={size + 20}
-          style={{ position: 'absolute', top: 0, left: 0 }}
-          aria-hidden="true"
-        >
-          <circle
-            cx={(size + 20) / 2}
-            cy={(size + 20) / 2}
-            r={(size + 4) / 2}
-            fill="none"
-            stroke="rgba(255,200,100,0.2)"
-            strokeWidth="8"
-          />
-          <circle
-            cx={(size + 20) / 2}
-            cy={(size + 20) / 2}
-            r={(size + 4) / 2}
-            fill="none"
-            stroke="#FF8C5A"
-            strokeWidth="8"
-            strokeDasharray={`${Math.PI * (size + 4)} ${Math.PI * (size + 4)}`}
-            strokeDashoffset={Math.PI * (size + 4) * (1 - pct / 100)}
-            strokeLinecap="round"
-            style={{ transition: 'stroke-dashoffset 0.3s ease', transformOrigin: 'center', transform: 'rotate(-90deg)' }}
-          />
-        </svg>
-
-        {/* The actual button */}
-        <button
-          type="button"
-          onPointerUp={onTap}
-          style={{
-            position:       'absolute',
-            top:             10,
-            left:            10,
-            width:           size,
-            height:          size,
-            borderRadius:   '50%',
-            background:     '#fff',
-            border:         'none',
-            boxShadow:      pulsing
-              ? '0 0 0 16px rgba(255,140,90,0.15), 0 8px 32px rgba(255,140,90,0.3)'
-              : '0 8px 32px rgba(0,0,0,0.12)',
-            cursor:         'pointer',
-            touchAction:    'manipulation',
-            display:        'flex',
-            alignItems:     'center',
-            justifyContent: 'center',
-            lineHeight:      1,
-            animation:      pulsing ? 'kidsPulse 1.5s ease-in-out infinite' : 'none',
-            transition:     'box-shadow 0.2s ease',
-          }}
-          aria-label="Ketuk"
-        >
-          <GameSprite emoji={emoji} size={96} />
-        </button>
-      </div>
-
-      {/* Tap dots progress */}
-      {tapsNeeded > 1 && (
-        <div style={{ display: 'flex', gap: 10 }}>
-          {Array.from({ length: tapsNeeded }, (_, i) => (
-            <div
-              key={i}
-              style={{
-                width:        i < progress ? 36 : 24,
-                height:       i < progress ? 36 : 24,
-                borderRadius: '50%',
-                background:   i < progress
-                  ? 'linear-gradient(135deg, #FF8C5A, #E8527A)'
-                  : 'rgba(61,43,31,0.12)',
-                transition:  'all 0.25s cubic-bezier(0.34,1.56,0.64,1)',
-                display:     'flex',
-                alignItems:  'center',
-                justifyContent:'center',
-                fontSize:    '1rem',
-              }}
-              aria-hidden="true"
-            >
-              {i < progress ? '✓' : ''}
-            </div>
-          ))}
-        </div>
-      )}
-    </div>
-  )
 }
 
 export function KidsTapStep({ recipe, step, onComplete }) {
@@ -170,12 +71,13 @@ export function KidsTapStep({ recipe, step, onComplete }) {
       const hasColor = step.learn?.colorHex
       const hasShape = step.learn?.shape
 
+      // Let the finishing action animation play out before the overlay.
       if (hasColor && !hasShape) {
-        setTimeout(() => setShowLearnColor(true), 300)
+        setTimeout(() => setShowLearnColor(true), 1400)
       } else if (hasShape) {
-        setTimeout(() => setShowLearnShape(true), 300)
+        setTimeout(() => setShowLearnShape(true), 1400)
       } else {
-        setTimeout(onComplete, 600)
+        setTimeout(onComplete, 1700)
       }
     }
   }, [tapCount, tapsNeeded, done, step, cfg, spawnParticles, onComplete])
@@ -232,54 +134,72 @@ export function KidsTapStep({ recipe, step, onComplete }) {
         justifyContent: 'center',
         position:       'relative',
       }}>
-        {!done ? (
-          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 16 }}>
-            <TapTarget
-              emoji={cfg.mainEmoji}
-              progress={tapCount}
-              tapsNeeded={tapsNeeded}
-              pulsing={true}
-              onTap={handleTap}
-            />
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 14, width: '100%' }}>
+          {/* Animated cooking scene — the whole stage is the tap target */}
+          <ActionStage
+            type={step.type}
+            recipeId={recipe?.id}
+            progress={tapCount}
+            tapsNeeded={tapsNeeded}
+            done={done}
+            onTap={handleTap}
+          />
 
-            {/* "Ketuk!" hint with finger pointer */}
+          {/* Tap dots progress */}
+          {tapsNeeded > 1 && !done && (
+            <div style={{ display: 'flex', gap: 10 }}>
+              {Array.from({ length: tapsNeeded }, (_, i) => (
+                <div
+                  key={i}
+                  style={{
+                    width:        i < tapCount ? 32 : 22,
+                    height:       i < tapCount ? 32 : 22,
+                    borderRadius: '50%',
+                    background:   i < tapCount
+                      ? 'linear-gradient(135deg, #FF8C5A, #E8527A)'
+                      : 'rgba(61,43,31,0.14)',
+                    transition:  'all 0.25s cubic-bezier(0.34,1.56,0.64,1)',
+                    display:     'flex',
+                    alignItems:  'center',
+                    justifyContent: 'center',
+                    fontSize:    '0.9rem',
+                    color:       '#fff',
+                  }}
+                  aria-hidden="true"
+                >
+                  {i < tapCount ? '✓' : ''}
+                </div>
+              ))}
+            </div>
+          )}
+
+          {!done ? (
             <p style={{
               fontFamily: "'Nunito', sans-serif",
               fontWeight:  800,
               fontSize:   '1.2rem',
-              color:      'rgba(61,43,31,0.55)',
+              color:      'rgba(61,43,31,0.6)',
               margin:      0,
               animation:  'fingerBounce 1s ease-in-out infinite',
             }}>
               👆 Ketuk sini!
             </p>
-          </div>
-        ) : (
-          /* Success state */
-          <div style={{
-            display:       'flex',
-            flexDirection: 'column',
-            alignItems:    'center',
-            gap:            16,
-            animation:     'kidsBigPop 0.5s cubic-bezier(0.34,1.7,0.64,1)',
-          }}>
-            <div style={{ filter: 'drop-shadow(0 8px 16px rgba(0,0,0,0.15))', animation: 'foodPulse 1.6s ease-in-out infinite' }}>
-              <GameSprite emoji={cfg.mainEmoji} size={130} />
-            </div>
-            {step.encouragement && (
+          ) : (
+            step.encouragement && (
               <div style={{
                 fontFamily: "'Fredoka One', 'Nunito', sans-serif",
-                fontSize:   '1.4rem',
+                fontSize:   '1.35rem',
                 fontWeight:  900,
                 color:      '#FF8C5A',
                 textAlign:  'center',
                 padding:    '0 16px',
+                animation:  'kidsBigPop 0.5s cubic-bezier(0.34,1.7,0.64,1)',
               }}>
                 {step.encouragement}
               </div>
-            )}
-          </div>
-        )}
+            )
+          )}
+        </div>
 
         {/* Burst particles */}
         {particles.map((p, i) => (
