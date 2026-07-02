@@ -28,6 +28,17 @@ export const burgerRecipe = {
       encouragement:'Wah! Daging dah masak! 🥩',
     },
     {
+      type:         STEP.SLICE,
+      label:        'Potong Tomato!',
+      emoji:        '🍅',
+      gesture:      'swipe',
+      sfx:          'chop',
+      oyenReact:    'cheeky',
+      durationHint: 3000,
+      learn:        { word: 'Merah', color: 'Merah', colorHex: '#FF4500', emoji: '🔴' },
+      encouragement:'Wah, pandai potong! 🍅',
+    },
+    {
       type:         STEP.STACK,
       label:        'Susun Burger!',
       emoji:        '🍔',

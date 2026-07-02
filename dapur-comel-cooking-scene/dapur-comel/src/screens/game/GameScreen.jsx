@@ -42,7 +42,7 @@ const STEP_COMPONENTS = {
   [STEP.STACK]:         KidsTapStep,
   [STEP.DECORATE]:      KidsTapStep,
   [STEP.FLIP]:          SwipeStep,
-  [STEP.SLICE]:         SwipeStep,
+  [STEP.SLICE]:         KidsTapStep,
   [STEP.FEED_OYEN]:     KidsFeedStep,
 }
 

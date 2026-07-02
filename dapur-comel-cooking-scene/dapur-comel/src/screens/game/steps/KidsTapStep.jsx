@@ -1,17 +1,10 @@
 /**
- * KidsTapStep.jsx — Ultra-simple tap step for toddlers (2-3 years)
+ * KidsTapStep.jsx — gesture-driven cooking step shell for toddlers (2-3 years)
  *
- * Design principles:
- *   - ONE big tap target (min 120px)
- *   - Immediate visual feedback on every tap
- *   - Big bounce animation on success
- *   - Clear "Ketuk!" instruction with finger emoji
- *   - Supports CRACK_EGG (2 taps), FRY, BAKE, POUR, FLATTEN_DOUGH (1 tap)
- *   - Shows learning moment (color/shape) after completion
- *
- * Open source assets used:
- *   - Fredoka One font (Google Fonts)
- *   - CSS animations only, no dependencies
+ * The ActionStage renders the interactive scene (knife slicing, real
+ * stirring, drag & drop stacking…) and reports each completed sub-goal
+ * via onUnit. This shell keeps score, plays sfx/haptics, shows the
+ * gesture hint, progress dots, encouragement and the learning overlay.
  */
 
 import { useState, useCallback, useRef } from 'react'
@@ -23,23 +16,39 @@ import { GameSprite } from '../../../components/ui/GameSprite.jsx'
 import { ActionStage } from './ActionStage.jsx'
 
 const STEP_CONFIG = {
-  [STEP.CRACK_EGG]:     { tapsNeeded: 2, mainEmoji: '🥚', successEmoji: '💛', bg: '#FFF9EC', borderColor: '#FFD700' },
-  [STEP.POUR]:          { tapsNeeded: 1, mainEmoji: '🥛', successEmoji: '💧', bg: '#F0F8FF', borderColor: '#87CEEB' },
-  [STEP.STIR]:          { tapsNeeded: 3, mainEmoji: '🥄', successEmoji: '🌀', bg: '#FFF0F8', borderColor: '#E8527A' },
-  [STEP.FRY]:           { tapsNeeded: 1, mainEmoji: '🍳', successEmoji: '🔥', bg: '#FFF8EC', borderColor: '#FF8C5A' },
-  [STEP.BAKE]:          { tapsNeeded: 1, mainEmoji: '🔥', successEmoji: '✨', bg: '#FFF4E0', borderColor: '#FF6B00' },
-  [STEP.FLATTEN_DOUGH]: { tapsNeeded: 2, mainEmoji: '🫓', successEmoji: '⭕', bg: '#FFFBF0', borderColor: '#DEB887' },
-  [STEP.SPREAD_SAUCE]:  { tapsNeeded: 2, mainEmoji: '🍅', successEmoji: '❤️', bg: '#FFF5F5', borderColor: '#FF4500' },
-  [STEP.ADD_TOPPINGS]:  { tapsNeeded: 3, mainEmoji: '🧀', successEmoji: '⭐', bg: '#FFFFF0', borderColor: '#FFD700' },
-  [STEP.STACK]:         { tapsNeeded: 4, mainEmoji: '🍔', successEmoji: '🌟', bg: '#FFF8EC', borderColor: '#C4521E' },
-  [STEP.DECORATE]:      { tapsNeeded: 2, mainEmoji: '🎨', successEmoji: '✨', bg: '#FFF0F8', borderColor: '#E8527A' },
+  [STEP.SLICE]:         { units: 4, successEmoji: '🔪' },
+  [STEP.CRACK_EGG]:     { units: 2, successEmoji: '💛' },
+  [STEP.POUR]:          { units: 1, successEmoji: '💧' },
+  [STEP.STIR]:          { units: 3, successEmoji: '🌀' },
+  [STEP.FRY]:           { units: 1, successEmoji: '🔥' },
+  [STEP.BAKE]:          { units: 1, successEmoji: '✨' },
+  [STEP.FLATTEN_DOUGH]: { units: 2, successEmoji: '⭕' },
+  [STEP.SPREAD_SAUCE]:  { units: 2, successEmoji: '❤️' },
+  [STEP.ADD_TOPPINGS]:  { units: 3, successEmoji: '⭐' },
+  [STEP.STACK]:         { units: 4, successEmoji: '🌟' },
+  [STEP.DECORATE]:      { units: 2, successEmoji: '✨' },
+}
+
+// What the toddler should DO, per gesture
+const GESTURE_HINT = {
+  [STEP.SLICE]:         '🔪 Sapu ke bawah untuk potong!',
+  [STEP.CRACK_EGG]:     '🥚 Tarik telur ke mangkuk!',
+  [STEP.POUR]:          '👇 Tekan & tahan untuk tuang!',
+  [STEP.STIR]:          '🌀 Pusing-pusing jari!',
+  [STEP.FRY]:           '⬆️ Sapu ke atas untuk terbalik!',
+  [STEP.BAKE]:          '🎂 Tarik kek masuk oven!',
+  [STEP.FLATTEN_DOUGH]: '↔️ Gerakkan penggiling kiri-kanan!',
+  [STEP.SPREAD_SAUCE]:  '🖐️ Gosok sos atas pizza!',
+  [STEP.ADD_TOPPINGS]:  '👇 Tarik topping ke pizza!',
+  [STEP.STACK]:         '👇 Tarik ke atas burger!',
+  [STEP.DECORATE]:      '↔️ Sapu sos kiri-kanan!',
 }
 
 export function KidsTapStep({ recipe, step, onComplete }) {
   const cfg = STEP_CONFIG[step.type] ?? STEP_CONFIG[STEP.FRY]
-  const tapsNeeded = cfg.tapsNeeded
+  const unitsTotal = cfg.units
 
-  const [tapCount,       setTapCount]       = useState(0)
+  const [unitsDone,      setUnitsDone]      = useState(0)
   const [done,           setDone]           = useState(false)
   const [particles,      setParticles]      = useState([])
   const [showLearnColor, setShowLearnColor] = useState(false)
@@ -51,36 +60,37 @@ export function KidsTapStep({ recipe, step, onComplete }) {
     setTimeout(() => setParticles([]), 700)
   }, [])
 
-  const handleTap = useCallback(() => {
+  const handleUnit = useCallback(() => {
     if (done || completingRef.current) return
     hapticTap()
     sfx.play(step.sfx ?? 'pop')
 
-    const next = tapCount + 1
-    setTapCount(next)
+    setUnitsDone(prev => {
+      const next = prev + 1
 
-    const successEmojis = Array.from({ length: 5 }, () => cfg.successEmoji)
-    spawnParticles(successEmojis)
+      const successEmojis = Array.from({ length: 5 }, () => cfg.successEmoji)
+      spawnParticles(successEmojis)
 
-    if (next >= tapsNeeded && !completingRef.current) {
-      completingRef.current = true
-      hapticSuccess()
-      setDone(true)
+      if (next >= unitsTotal && !completingRef.current) {
+        completingRef.current = true
+        hapticSuccess()
+        setDone(true)
 
-      // Show educational moment based on step data
-      const hasColor = step.learn?.colorHex
-      const hasShape = step.learn?.shape
+        const hasColor = step.learn?.colorHex
+        const hasShape = step.learn?.shape
 
-      // Let the finishing action animation play out before the overlay.
-      if (hasColor && !hasShape) {
-        setTimeout(() => setShowLearnColor(true), 1400)
-      } else if (hasShape) {
-        setTimeout(() => setShowLearnShape(true), 1400)
-      } else {
-        setTimeout(onComplete, 1700)
+        // Let the finishing action animation play out before the overlay.
+        if (hasColor && !hasShape) {
+          setTimeout(() => setShowLearnColor(true), 1400)
+        } else if (hasShape) {
+          setTimeout(() => setShowLearnShape(true), 1400)
+        } else {
+          setTimeout(onComplete, 1700)
+        }
       }
-    }
-  }, [tapCount, tapsNeeded, done, step, cfg, spawnParticles, onComplete])
+      return next
+    })
+  }, [unitsTotal, done, step, cfg, spawnParticles, onComplete])
 
   const handleLearnDone = useCallback(() => {
     setShowLearnColor(false)
@@ -135,27 +145,27 @@ export function KidsTapStep({ recipe, step, onComplete }) {
         position:       'relative',
       }}>
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 14, width: '100%' }}>
-          {/* Animated cooking scene — the whole stage is the tap target */}
+          {/* Interactive cooking scene — gesture-driven */}
           <ActionStage
             type={step.type}
             recipeId={recipe?.id}
-            progress={tapCount}
-            tapsNeeded={tapsNeeded}
+            unitsDone={unitsDone}
+            unitsTotal={unitsTotal}
             done={done}
-            onTap={handleTap}
+            onUnit={handleUnit}
           />
 
-          {/* Tap dots progress */}
-          {tapsNeeded > 1 && !done && (
+          {/* Progress dots */}
+          {unitsTotal > 1 && !done && (
             <div style={{ display: 'flex', gap: 10 }}>
-              {Array.from({ length: tapsNeeded }, (_, i) => (
+              {Array.from({ length: unitsTotal }, (_, i) => (
                 <div
                   key={i}
                   style={{
-                    width:        i < tapCount ? 32 : 22,
-                    height:       i < tapCount ? 32 : 22,
+                    width:        i < unitsDone ? 32 : 22,
+                    height:       i < unitsDone ? 32 : 22,
                     borderRadius: '50%',
-                    background:   i < tapCount
+                    background:   i < unitsDone
                       ? 'linear-gradient(135deg, #FF8C5A, #E8527A)'
                       : 'rgba(61,43,31,0.14)',
                     transition:  'all 0.25s cubic-bezier(0.34,1.56,0.64,1)',
@@ -167,7 +177,7 @@ export function KidsTapStep({ recipe, step, onComplete }) {
                   }}
                   aria-hidden="true"
                 >
-                  {i < tapCount ? '✓' : ''}
+                  {i < unitsDone ? '✓' : ''}
                 </div>
               ))}
             </div>
@@ -177,12 +187,13 @@ export function KidsTapStep({ recipe, step, onComplete }) {
             <p style={{
               fontFamily: "'Nunito', sans-serif",
               fontWeight:  800,
-              fontSize:   '1.2rem',
+              fontSize:   '1.15rem',
               color:      'rgba(61,43,31,0.6)',
               margin:      0,
+              textAlign:  'center',
               animation:  'fingerBounce 1s ease-in-out infinite',
             }}>
-              👆 Ketuk sini!
+              {GESTURE_HINT[step.type] ?? '👆 Ketuk sini!'}
             </p>
           ) : (
             step.encouragement && (

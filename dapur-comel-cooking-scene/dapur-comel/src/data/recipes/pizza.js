@@ -39,6 +39,17 @@ export const pizzaRecipe = {
       encouragement:'Sos merah dah siap! 🍅',
     },
     {
+      type:         STEP.SLICE,
+      label:        'Potong Cendawan!',
+      emoji:        '🍄',
+      gesture:      'swipe',
+      sfx:          'chop',
+      oyenReact:    'cheeky',
+      durationHint: 3000,
+      learn:        { word: 'Empat', number: 4, emoji: '4️⃣' },
+      encouragement:'Empat hirisan! Pandai! 🍄',
+    },
+    {
       type:         STEP.ADD_TOPPINGS,
       label:        'Letak Topping!',
       emoji:        '🧀',
